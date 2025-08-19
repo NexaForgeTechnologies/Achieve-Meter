@@ -1,5 +1,20 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import { Montserrat, Inter } from "next/font/google";
 import "./globals.css";
+import Footer from "@/containers/Footer";
+import Header from "@/containers/Header";
+
+const montserrat = Montserrat({
+  subsets: ["latin"],   // required
+  weight: ["400", "700"], // choose the weights you need
+  variable: "--font-montserrat", // optional (for Tailwind or global use)
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-inter",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,10 +34,25 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
+
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` ${montserrat.variable} ${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
-        {children}
+        <Header />
+        <main className="px-5 sm:px-10 md:px-18 lg:px-20">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
