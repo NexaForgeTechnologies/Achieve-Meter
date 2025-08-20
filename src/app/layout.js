@@ -49,7 +49,7 @@ export default function RootLayout({ children }) {
         className={` ${montserrat.variable} ${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
         <Header />
-        <main className="px-5 sm:px-10 md:px-18 lg:px-20">
+        <main className="px-5 sm:px-10 md:px-18 lg:px-20 bg-white">
           {children}
         </main>
         <Footer />

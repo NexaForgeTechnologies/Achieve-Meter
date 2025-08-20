@@ -1,14 +1,17 @@
-export default function BtnOne({ 
-    name, 
+export default function BtnOne({
+    name,
     bgColor = "bg-[#CD8A33]",
-    hoverBgColor = "bg-[#DFAA4A]",
+    hoverBgColor = "hover:bg-[#CD8A33]",
     textColor = "text-[white]",
-    hoverTextColor = "text-[#CD8A33]", }) {
+    hoverTextColor = "hover:text-[white]",
+    borderColor = "border-[#CD8A33]",
+    className }) {
     return (
         <button
-            className={`${bgColor} ${hoverBgColor} ${textColor} ${hoverTextColor} font-normal py-2 px-4 rounded-full text-sm sm:text-base md:text-lg lg:text-xl`}
-            >
-                {name}
-            </button>
+            className={`${bgColor} ${hoverBgColor} ${textColor} ${hoverTextColor} ${borderColor} ${className} border font-normal 
+        py-1.5 px-2 sm:px-3 rounded-full text-xs sm:text-sm lg:text-xl`}
+        >
+            {name}
+        </button>
     );
 }

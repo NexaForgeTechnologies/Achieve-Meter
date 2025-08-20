@@ -4,17 +4,18 @@ export default function InsideMyAchieve() {
     return (
         <section className="flex flex-col justify-center items-center relative bg-[#E5B3521A] rounded-2xl py-10 sm:py-15 px-5 md:pax-7 my-10">
 
-            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-center pb-5">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-center pb-5 -ml-3 text-black">
                 What's Inside{" "}
-                <span className="inline-flex flex-col items-center font-bold -ml-3">
+                <span className="inline-flex flex-col items-center font-bold">
                     MyAchieve
-                    <img src="/slash.png" alt="lines" className="w-[80%] md:w-full" />
+                    <img src="/slash.png" alt="lines" className="max-w-30 md:max-w-45" />
                 </span>
             </h1>
 
-            <img src="/dots.png" alt="dots sheet" className="absolute right-2 md:right-5 top-5 md:top-5 -z-10 opacity-80" />
+            <img src="/dots.png" alt="dots sheet" className="absolute right-2 md:right-5 top-5 md:top-5" />
+            <img src="/dots-vertical.png" alt="dots sheet" className="absolute left-3 bottom-25" />
 
-            <section>
+            <section className="z-10">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 py-5">
                     <InsideAchieveComp
                         title={"Career Milestone Mapping"}
