@@ -3,7 +3,7 @@ import BtnOne from "@/components/BtnOne";
 export default function HomeCont() {
     return (
         <>
-            <section className="grid grid-cols-1 lg:grid-cols-2 bg-[#fff9f0] w-screen ml-[calc(50%-50vw)] px-5 sm:px-10 md:px-18 lg:px-20 pb-10">
+            <section className="grid grid-cols-1 lg:grid-cols-2 bg-[#E5B3521A] w-screen ml-[calc(50%-50vw)] px-5 sm:px-10 md:px-18 lg:px-20 pb-10">
 
                 <div className="flex flex-col justify-center items-start py-15 md:pr-5">
                     <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-start pb-5 flex flex-col  max-w-120 text-black">

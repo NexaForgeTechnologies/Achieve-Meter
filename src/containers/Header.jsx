@@ -1,6 +1,9 @@
 "use client";
 import BtnOne from "../components/BtnOne";
+import useFormStore from "../useFormStore";
 export default function Header() {
+
+const { isOpen, setIsOpen } = useFormStore();
 
     return (
         <>
@@ -11,7 +14,7 @@ export default function Header() {
 
                     <BtnOne
                         name={"Join the Waitlist"}
-                        // onClick={() => setIsOpen(!isOpen)} 
+                        onClick={() => setIsOpen(!isOpen)} 
                         />
                 </nav>
             </nav>

@@ -3,6 +3,7 @@ import { Montserrat, Inter } from "next/font/google";
 import "./globals.css";
 import Footer from "@/containers/Footer";
 import Header from "@/containers/Header";
+import FormApplication from "@/containers/FormApplication";
 
 const montserrat = Montserrat({
   subsets: ["latin"],   // required
@@ -53,6 +54,7 @@ export default function RootLayout({ children }) {
           {children}
         </main>
         <Footer />
+        <FormApplication />
       </body>
     </html>
   );
