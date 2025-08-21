@@ -5,20 +5,19 @@ export async function POST(request) {
     const body = await request.json();
 
     const {
-      membership_type,
-      name,
-      job,
-      company_name,
-      email,
-      linkedin,
-      country,
+      membership_type,   // "individual" | "business"
+      name,              // Full Name
+      email,             // Email Address
+      linkedin,          // LinkedIn Profile (optional)
+      hopes,
+      early_access,      // Yes or NO
+      contact_name,      // Contact Name
+      company_name,      // Company Name
+      company_size,      // Company Size
+      business_email,    // Business Email
+      company_industry,
       interests,
-      membership_options,
-      seniority,
-      goals,
-      benefits,
       source,
-      source_other,
       invite_option,
     } = body;
 
@@ -58,38 +57,37 @@ export async function POST(request) {
     const [result] = await db.execute(
       `INSERT INTO waitlist 
       (
-        membership_type, 
-        name, 
-        job_title, 
-        company_name, 
-        email, 
-        linkedin, 
-        country, 
-        interests, 
-        membership_options,
-        seniority,
-        goals,
-        benefits,
-        source,
-        source_other,
-        invite_option
+      membership_type,
+      name,              
+      email,             
+      linkedin,          
+      hopes,
+      early_access,      
+      contact_name,      
+      company_name,      
+      company_size,      
+      business_email,    
+      company_industry,
+      interests,
+      source,
+      invite_option,
       )
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         membership_type || null,
         name || null,
-        job || null,
-        company_name || null,
         email || null,
         linkedin || null,
-        country || null,
+        JSON.stringify(hopes) || null,
+        early_access || null,
+        contact_name || null,
+        company_name || null,
+        company_size || null,
+        business_email || null,
+        early_access || null,
+        JSON.stringify(company_industry) || null,
         JSON.stringify(interests) || null,
-        JSON.stringify(membership_options) || null,
-        seniority || null,
-        goals || null,
-        benefits || null,
         JSON.stringify(source) || null,
-        source_other || null,
         invite_option || null,
       ]
     );

@@ -1,36 +1,11 @@
-// import mysql from "mysql2/promise";
 
-// const db = mysql.createPool({
-//     host: "localhost",
-//     user: "root",
-//     password: "",
-//     database: "XEC_PLUG_DATABASE",
-// });
-
-// async function testConnection() {
-//   try {
-//     const connection = await db.getConnection();
-//     console.log("✅ Connected to the MySQL database via XAMPP!");
-//     connection.release();
-//   } catch (error) {
-//     console.error("DB Insert Error:", error); 
-//     console.error("❌ Error connecting to the database:", error.message);
-//   }
-// }
-
-// testConnection();
-
-
-
-
-// db.js
 import mysql from "mysql2/promise";
 
 const db = mysql.createPool({
   host: "localhost",
   user: "root",
   password: "",
-  database: "XEC_PLUG_DATABASE",
+  database: "ACHIEVE_METER_DATABASE",
 });
 
 // ✅ export db as default so you can import db from "..."
