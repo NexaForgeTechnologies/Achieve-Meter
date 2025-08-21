@@ -5,11 +5,11 @@ export default function WhyMyAchieveCont() {
         <>
             <section className="grid grdi-cols-1 md:grid-cols-2 py-15 gap-5 md:gap-7">
 
-                <div className="lg:row-start-2 flex items-center justify-center">
+                <div className=" flex items-center justify-center">
                     <img src="/why.png" alt="img" />
                 </div>
 
-                <div className="flex flex-col gap-y-4 py-10">
+                <div className="flex flex-col gap-y-4 py-10 md:row-start-1">
                     <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-start text-black">
                         Why
                         <span className="inline-flex flex-col items-start font-bold ml-2">
