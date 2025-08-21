@@ -5,29 +5,33 @@ import useFormStore from '@/useFormStore';
 import axios from 'axios';
 
 export default function FormApplication() {
-
   const [formData, setFormData] = useState({
-    membership_type: "",
-    name: "",
-    job: "",
-    company_name: "",
-    email: "",
-    linkedin: "",
-    country: "",
-    interests: [],           // store Step 3 “what attracts you” checkboxes
-    membership_options: [],  // store Step 3 “membership type options” checkboxes
-    seniority: "",
-    goals: "",
-    benefits: "",
-    source: [],            // array for “How did you hear about us” checkboxes
-    source_other: "",      // text for “Other”
-    invite_option: ""      // radio yes/no
-  }
-  );
+    // Section 1
+    membership_type: "",   // "individual" | "business"
+
+    name: "",              // Full Name
+    email: "",             // Email Address
+    linkedin: "",          // LinkedIn Profile (optional)
+    hopes: [],
+    early_access: "",      // Yes or NO
+
+    contact_name: "",      // Contact Name
+    company_name: "",      // Company Name
+    company_size: "",      // Company Size
+    business_email: "",    // Business Email
+    company_industry: [],  // ✅ must stay array for checkboxes
+    interests: [],         // ✅ must stay array for checkboxes
+    source: [],            // ✅ must stay array for checkboxes
+    invite_option: "",     // Invite Option
+  });
 
   // For text, email, radio inputs
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "radio" ? value : value, // radio handled same as text
+    }));
   };
 
   // For checkboxes (multi-select arrays)
@@ -38,9 +42,11 @@ export default function FormApplication() {
       let updatedArray = [...prev[key]];
 
       if (checked) {
-        updatedArray.push(value); // add if checked
+        if (!updatedArray.includes(value)) {
+          updatedArray.push(value); // ✅ avoid duplicates
+        }
       } else {
-        updatedArray = updatedArray.filter((item) => item !== value); // remove if unchecked
+        updatedArray = updatedArray.filter((item) => item !== value); // remove
       }
 
       return { ...prev, [key]: updatedArray };
@@ -60,7 +66,6 @@ export default function FormApplication() {
       alert("Error submitting form");
     }
   };
-
 
   const { isOpen, setIsOpen } = useFormStore();
 
@@ -112,7 +117,7 @@ export default function FormApplication() {
                         value="individual"
                         checked={formData.membership_type === "individual"}
                         onChange={handleChange}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
                         An Individual Procurement Executive
@@ -128,7 +133,7 @@ export default function FormApplication() {
                         value="business"
                         checked={formData.membership_type === "business"}
                         onChange={handleChange}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
                         Representing a Business / Organisation
@@ -182,45 +187,43 @@ export default function FormApplication() {
                     />
                   </label>
                 </div>
-                
-                  {/* LinkedIn (optional) */}
-                  <label className="flex flex-col justify-start gap-y-2">
-                    <div>
-                      <span className='text-[#1B1B1B] text-base md:text-xl'>
-                        LinkedIn Profile
-                      </span>
-                    </div>
-                    <input
-                      type="text"
-                      name="linkedin"
-                      placeholder="LinkedIn Profile (optional)"
-                      value={formData.linkedin}
-                      onChange={handleChange}
-                      className="appearance-none w-full bg-transparent border border-[#444444] rounded-md px-3 py-2 text-[#808080] placeholder-[#808080] focus:outline-none"
-                    />
-                  </label>
+
+                {/* LinkedIn (optional) */}
+                <label className="flex flex-col justify-start gap-y-2">
+                  <div>
+                    <span className='text-[#1B1B1B] text-base md:text-xl'>
+                      LinkedIn Profile
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    name="linkedin"
+                    placeholder="LinkedIn Profile (optional)"
+                    value={formData.linkedin}
+                    onChange={handleChange}
+                    className="appearance-none w-full bg-transparent border border-[#444444] rounded-md px-3 py-2 text-[#808080] placeholder-[#808080] focus:outline-none"
+                  />
+                </label>
               </section>
 
 
 
-              {/* Step 3: Your Interest in Xec Plug */}
+              {/* Step 3*/}
               <section className='flex flex-col gap-y-2'>
-                <h1 className='text-lg lg:text-2xl text-[#CD8A33] font-semibold'>Step 3:
-                  <span className='font-normal ml-1'>Your Interest in Xec Plug</span></h1>
-                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">What attracts you to the Xec Plug platform? (Select all that apply)</p>
+                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">What are you hoping to achieve with AchieveMeter?(Tick all that apply)</p>
 
                 <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
                   <label className="flex items-start gap-x-3">
                     <div>
                       <input
                         type="checkbox"
-                        value="Boardroom Readiness"
-                        checked={formData.interests.includes("Boardroom Readiness")}
-                        onChange={(e) => handleCheckboxChange(e, "interests")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        value="Career direction / clarity"
+                        checked={formData.hopes.includes("Career direction / clarity")}
+                        onChange={(e) => handleCheckboxChange(e, "hopes")}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        Boardroom Readiness
+                        Career direction / clarity
                       </span>
                     </div>
                   </label>
@@ -229,13 +232,13 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        value="Representing a Business / Organisation"
-                        checked={formData.interests.includes("Representing a Business / Organisation")}
-                        onChange={(e) => handleCheckboxChange(e, "interests")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        value="Promotion readiness"
+                        checked={formData.hopes.includes("Promotion readiness")}
+                        onChange={(e) => handleCheckboxChange(e, "hopes")}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        Representing a Business / Organisation
+                        Promotion readiness
                       </span>
                     </div>
                   </label>
@@ -244,13 +247,13 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        value="Proprietary Leadership Tools (XecAchieve, XecXchange, etc.)"
-                        checked={formData.interests.includes("Proprietary Leadership Tools (XecAchieve, XecXchange, etc.)")}
-                        onChange={(e) => handleCheckboxChange(e, "interests")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        value="Goal setting and tracking"
+                        checked={formData.hopes.includes("Goal setting and tracking")}
+                        onChange={(e) => handleCheckboxChange(e, "hopes")}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        Proprietary Leadership Tools (XecAchieve, XecXchange, etc.)
+                        Goal setting and tracking
                       </span>
                     </div>
                   </label>
@@ -259,13 +262,13 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        value="Executive Retreats & In-Person Events"
-                        checked={formData.interests.includes("Executive Retreats & In-Person Events")}
-                        onChange={(e) => handleCheckboxChange(e, "interests")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        value="Wellbeing and emotional balance"
+                        checked={formData.hopes.includes("Wellbeing and emotional balance")}
+                        onChange={(e) => handleCheckboxChange(e, "hopes")}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        Executive Retreats & In-Person Events
+                        Wellbeing and emotional balance
                       </span>
                     </div>
                   </label>
@@ -274,13 +277,13 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        value="Virtual Masterclasses & On-Demand Learning"
-                        checked={formData.interests.includes("Virtual Masterclasses & On-Demand Learning")}
-                        onChange={(e) => handleCheckboxChange(e, "interests")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        value="External coaching or mentoring"
+                        checked={formData.hopes.includes("External coaching or mentoring")}
+                        onChange={(e) => handleCheckboxChange(e, "hopes")}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        Virtual Masterclasses & On-Demand Learning
+                        External coaching or mentoring
                       </span>
                     </div>
                   </label>
@@ -290,9 +293,9 @@ export default function FormApplication() {
                       <input
                         type="checkbox"
                         value="Enterprise Transformation Strategy"
-                        checked={formData.interests.includes("Enterprise Transformation Strategy")}
-                        onChange={(e) => handleCheckboxChange(e, "interests")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        checked={formData.hopes.includes("Enterprise Transformation Strategy")}
+                        onChange={(e) => handleCheckboxChange(e, "hopes")}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
                         Enterprise Transformation Strategy
@@ -304,13 +307,13 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        value="Coaching & Concierge Support"
-                        checked={formData.interests.includes("Coaching & Concierge Support")}
-                        onChange={(e) => handleCheckboxChange(e, "interests")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        value="Personal development bootcamps"
+                        checked={formData.hopes.includes("Personal development bootcamps")}
+                        onChange={(e) => handleCheckboxChange(e, "hopes")}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        Coaching & Concierge Support
+                        Personal development bootcamps
                       </span>
                     </div>
                   </label>
@@ -319,96 +322,35 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        value="Other"
-                        checked={formData.interests.includes("Other")}
-                        onChange={(e) => handleCheckboxChange(e, "interests")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        value="Peer validation and feedback"
+                        checked={formData.hopes.includes("Peer validation and feedback")}
+                        onChange={(e) => handleCheckboxChange(e, "hopes")}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        Other (please specify):
-                        <input
-                          type="text"
-                          value={formData.other_interest || ""}
-                          onChange={(e) => setFormData({ ...formData, other_interest: e.target.value })}
-                          placeholder='_____________'
-                          className='pl-2 outline-none border-none bg-transparent' />
+                        Peer validation and feedback
                       </span>
                     </div>
                   </label>
                 </div>
               </section>
 
-              <section>
-                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">What attracts you to the Xec Plug platform? (Select all that apply)</p>
-
-                <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
-                  <label className="flex items-start gap-x-3">
-                    <div>
-                      <input
-                        type="checkbox"
-                        value="Digital Membership (virtual access)"
-                        checked={formData.membership_options.includes("Digital Membership (virtual access)")}
-                        onChange={(e) => handleCheckboxChange(e, "membership_options")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
-                      />
-                      <span className='text-[#808080] text-base md:text-lg'>
-                        Digital Membership (virtual access)
-                      </span>
-                    </div>
-                  </label>
-
-                  <label className="flex items-start gap-x-3">
-                    <div>
-                      <input
-                        type="checkbox"
-                        value="Xec House Membership (in-person access)"
-                        checked={formData.membership_options.includes("Xec House Membership (in-person access)")}
-                        onChange={(e) => handleCheckboxChange(e, "membership_options")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
-                      />
-                      <span className='text-[#C2C2C2] text-base md:text-lg'>
-                        Xec House Membership (in-person access)
-                      </span>
-                    </div>
-                  </label>
-
-                  <label className="flex items-start gap-x-3">
-                    <div>
-                      <input
-                        type="checkbox"
-                        value="Not sure yet – I’d like to explore options"
-                        checked={formData.membership_options.includes("Not sure yet – I’d like to explore options")}
-                        onChange={(e) => handleCheckboxChange(e, "membership_options")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
-                      />
-                      <span className='text-[#C2C2C2] text-base md:text-lg'>
-                        Not sure yet – I’d like to explore options
-                      </span>
-                    </div>
-                  </label>
-                </div>
-              </section>
-
-
-              {/* Step 4: Vision & Fit */}
               <section className='flex flex-col gap-y-2'>
-                <h1 className='text-lg lg:text-2xl text-[#CD8A33] font-semibold'>Step 4:
-                  <span className='font-normal ml-1'>Step 4: Vision & Fit</span></h1>
-                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">What is your current level of seniority?</p>
+                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">Would you like early access to our AI-led bootcamps?</p>
 
                 <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
                   <label className="flex items-start gap-x-3">
                     <div>
                       <input
                         type="radio"
-                        name="seniority"
-                        value="CPO"
-                        checked={formData.seniority === "CPO"}
+                        name="early_access"
+                        value="Yes"
+                        checked={formData.early_access === "Yes"}
                         onChange={handleChange}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        CPO
+                        Yes
                       </span>
                     </div>
                   </label>
@@ -416,103 +358,354 @@ export default function FormApplication() {
                   <label className="flex items-start gap-x-3">
                     <div>
                       <input
-                        type="radio"
-                        name="seniority"
-                        value="Director / Head of Procurement"
-                        checked={formData.seniority === "Director / Head of Procurement"}
+                        type='radio'
+                        name="early_access"
+                        value="No"
+                        checked={formData.early_access === "No"}
                         onChange={handleChange}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        Director / Head of Procurement
-                      </span>
-                    </div>
-                  </label>
-
-                  <label className="flex items-start gap-x-3">
-                    <div>
-                      <input
-                        type="radio"
-                        name="seniority"
-                        value="VP / AVP"
-                        checked={formData.seniority === "VP / AVP"}
-                        onChange={handleChange}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
-                      />
-                      <span className='text-[#808080] text-base md:text-lg'>
-                        VP / AVP
-                      </span>
-                    </div>
-                  </label>
-
-                  <label className="flex items-start gap-x-3">
-                    <div>
-                      <input
-                        type="radio"
-                        name="seniority"
-                        value="Executive / NED"
-                        checked={formData.seniority === "Executive / NED"}
-                        onChange={handleChange}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
-                      />
-                      <span className='text-[#808080] text-base md:text-lg'>
-                        Executive / NED
-                      </span>
-                    </div>
-                  </label>
-
-                  <label className="flex items-start gap-x-3">
-                    <div>
-                      <input
-                        type="radio"
-                        name="seniority"
-                        value="Other"
-                        checked={formData.seniority === "Other"}
-                        onChange={handleChange}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
-                      />
-                      <span className='text-[#808080] text-base md:text-lg'>
-                        Other:
-                        <input
-                          type="text"
-                          value={formData.seniority_other}
-                          onChange={(e) => setFormData({ ...formData, seniority_other: e.target.value })}
-                          placeholder='_____________'
-                          className='pl-2 outline-none border-none bg-transparent' />
+                        No
                       </span>
                     </div>
                   </label>
                 </div>
-
-                <div className='flex flex-col gap-y-3 mt-2'>
-                  <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">What are your next leadership goals (e.g., COO, CEO, NED, transformation lead)? </p>
-                  <textarea
-                    value={formData.goals}
-                    onChange={handleChange}
-                    name="goals"
-                    rows="4"
-                    placeholder='Write your answer'
-                    className="w-full bg-transparent text-[#808080] border border-[#C2C2C2]/50 min-h-30 outline-none rounded p-2"></textarea>
-                </div>
-
-                <div className='flex flex-col gap-y-3 mt-2'>
-                  <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">What would you hope to gain from being part of the founding cohort?</p>
-                  <textarea
-                    value={formData.benefits}
-                    onChange={handleChange}
-                    name="benefits"
-                    rows="4"
-                    placeholder='Write your answer'
-                    className="w-full bg-transparent text-[#808080] border border-[#C2C2C2]/50 min-h-30 outline-none rounded p-2"></textarea>
-                </div>
-
               </section>
 
-              {/* Step 5: Final Confirmation */}
+
               <section className='flex flex-col gap-y-2'>
-                <h1 className='text-lg lg:text-2xl text-[#CD8A33] font-semibold'>Step 5:
-                  <span className='font-normal ml-1'>Final Confirmation</span></h1>
-                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">How did you hear about The Procurement Xec Plug?</p>
+                <h1 className='text-lg lg:text-2xl text-[#CD8A33] font-semibold'>For Business / Enterprise
+                  <span className='font-normal ml-1'> (conditional logic: show if “Business” is ticked)</span></h1>
+
+                <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-3">
+
+                  {/* Name */}
+                  <label className="flex flex-col justify-start gap-y-2">
+                    <div>
+                      <span className='text-[#1B1B1B] text-base md:text-xl'>
+                        Contact Name
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="contact_name"
+                      placeholder="Full Name"
+                      value={formData.contact_name}
+                      onChange={handleChange}
+                      required
+                      className="appearance-none w-full bg-transparent border border-[#444444] rounded-md px-3 py-2 text-[#808080] placeholder-[#808080] focus:outline-none"
+                    />
+                  </label>
+
+                  <label className="flex flex-col justify-start gap-y-2">
+                    <div>
+                      <span className='text-[#1B1B1B] text-base md:text-xl'>
+                        Enter Company Name
+                      </span>
+                    </div>
+                    <input
+                      type="email"
+                      name="company_name"
+                      placeholder="Email Address"
+                      value={formData.company_name}
+                      onChange={handleChange}
+                      required
+                      className="appearance-none w-full bg-transparent border border-[#444444] rounded-md px-3 py-2 text-[#808080] placeholder-[#808080] focus:outline-none"
+                    />
+                  </label>
+
+                </div>
+
+
+                <label className="flex flex-col justify-start gap-y-2">
+                  <div>
+                    <span className='text-[#1B1B1B] text-base md:text-xl'>
+                      Business Email Address
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    name="business_email"
+                    placeholder="Enter Business Email Address"
+                    value={formData.business_email}
+                    onChange={handleChange}
+                    className="appearance-none w-full bg-transparent border border-[#444444] rounded-md px-3 py-2 text-[#808080] placeholder-[#808080] focus:outline-none"
+                  />
+                </label>
+              </section>
+
+              <section className='flex flex-col gap-y-2'>
+                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">Company Size</p>
+
+                <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="radio"
+                        name="company_size"
+                        value="1–10 employees"
+                        checked={formData.company_size === "1–10 employees"}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        1–10 employees
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="radio"
+                        name="company_size"
+                        value="11–50 employees"
+                        checked={formData.company_size === "11–50 employees"}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        11–50 employees
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="radio"
+                        name="company_size"
+                        value="51–250 employees"
+                        checked={formData.company_size === "51–250 employees"}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        51–250 employees
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="radio"
+                        name="company_size"
+                        value="251–1000 employees"
+                        checked={formData.company_size === "251–1000 employees"}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        251–1000 employees
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="radio"
+                        name="company_size"
+                        value="1000+ employees"
+                        checked={formData.company_size === "1000+ employees"}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        1000+ employees
+                      </span>
+                    </div>
+                  </label>
+                </div>
+              </section>
+
+
+              <section className='flex flex-col gap-y-2'>
+                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">
+                  What is your current development setup?(Tick all that apply)
+                </p>
+
+                <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="company_industry"
+                        value="LMS (Learning Management System)"
+                        checked={formData.company_industry.includes("LMS (Learning Management System)")}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        LMS (Learning Management System)
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="company_industry"
+                        value="HRIS Platform"
+                        checked={formData.company_industry.includes("HRIS Platform")}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        HRIS Platform
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="company_industry"
+                        value="Appraisal System"
+                        checked={formData.company_industry.includes("Appraisal System")}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        Appraisal System
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="company_industry"
+                        value="Internal Coaching"
+                        checked={formData.company_industry.includes("Internal Coaching")}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        Internal Coaching
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="company_industry"
+                        value="None of the above"
+                        checked={formData.company_industry.includes("None of the above")}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        None of the above
+                      </span>
+                    </div>
+                  </label>
+                </div>
+              </section>
+
+
+
+              <section className='flex flex-col gap-y-2'>
+                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">
+                  What are you interested in?
+                </p>
+
+                <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="interests"
+                        value="Demo of AchieveMeter"
+                        checked={formData.interests.includes("Demo of AchieveMeter")}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        Demo of AchieveMeter
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="interests"
+                        value="Joining the enterprise pilot"
+                        checked={formData.interests.includes("Joining the enterprise pilot")}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        Joining the enterprise pilot
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="interests"
+                        value="White-labelling options"
+                        checked={formData.interests.includes("White-labelling options")}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        White-labelling options
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="interests"
+                        value="Receiving the enterprise pack"
+                        checked={formData.interests.includes("Receiving the enterprise pack")}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        Receiving the enterprise pack
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-x-3">
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="interests"
+                        value="Strategic partnership"
+                        checked={formData.interests.includes("Strategic partnership")}
+                        onChange={handleChange}
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>
+                        Strategic partnership
+                      </span>
+                    </div>
+                  </label>
+                </div>
+              </section>
+
+
+              {/* Final Confirmation */}
+              <section className='flex flex-col gap-y-2'>
+                <h1 className='text-lg lg:text-2xl text-[#CD8A33] font-semibold'>Final Section
+                  <span className='font-normal ml-1'>(for all)</span></h1>
+                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">How did you hear about AchieveMeter?</p>
 
                 <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
                   <label className="flex items-start gap-x-3">
@@ -520,9 +713,9 @@ export default function FormApplication() {
                       <input
                         type="checkbox"
                         name='linkedin'
-                        value={formData.linkedin}
+                        value={formData.source.includes("LinkedIn")}
                         onChange={handleChange}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
                         LinkedIn
@@ -534,13 +727,13 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        value="Referral"
-                        checked={formData.source.includes("Referral")}
+                        value="Event or webinar"
+                        checked={formData.source.includes("Event or webinar")}
                         onChange={(e) => handleCheckboxChange(e, "source")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        Referral
+                        Event or webinar
                       </span>
                     </div>
                   </label>
@@ -552,10 +745,10 @@ export default function FormApplication() {
                         value="Procurement Plug Ecosystem"
                         checked={formData.source.includes("Procurement Plug Ecosystem")}
                         onChange={(e) => handleCheckboxChange(e, "source")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        Procurement Plug Ecosystem
+                        Newsletter
                       </span>
                     </div>
                   </label>
@@ -567,10 +760,10 @@ export default function FormApplication() {
                         value="Event or Webinar"
                         checked={formData.source.includes("Event or Webinar")}
                         onChange={(e) => handleCheckboxChange(e, "source")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        Event or Webinar
+                        Word of mouth
                       </span>
                     </div>
                   </label>
@@ -582,12 +775,12 @@ export default function FormApplication() {
                         value="Other"
                         checked={formData.source.includes("Other")}
                         onChange={(e) => handleCheckboxChange(e, "source")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        Other:
+                        Other (please specify)
                         <input type="text"
-                          value={formData.source_other}
+                          value={formData.source}
                           onChange={(e) => setFormData({ ...formData, source_other: e.target.value })}
                           placeholder='_____________'
                           className='pl-2 outline-none border-none bg-transparent' />
@@ -598,7 +791,7 @@ export default function FormApplication() {
               </section>
 
               <section>
-                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">Would you like to be added to our updates and exclusive invite list?</p>
+                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">Would you like to receive early product updates and behind-the-scenes content?</p>
 
                 <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
                   <label className="flex items-start gap-x-3">
@@ -609,10 +802,10 @@ export default function FormApplication() {
                         value="Yes"
                         checked={formData.invite_option === "Yes"}
                         onChange={handleChange}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        Yes, keep me informed
+                        Yes, keep me updated
                       </span>
                     </div>
                   </label>
@@ -625,10 +818,10 @@ export default function FormApplication() {
                         value="No"
                         checked={formData.invite_option === "No"}
                         onChange={handleChange}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[white] checked:border-[white] mr-2 cursor-pointer "
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
-                        No, just waitlist me for now
+                        No, just notify me when we launch
                       </span>
                     </div>
                   </label>
