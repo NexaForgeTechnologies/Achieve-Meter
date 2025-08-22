@@ -85,7 +85,7 @@ export default function FormApplication() {
             onSubmit={handleSubmit} >
 
             <section className='bg-[#FCF7EE] p-6 rounded-lg shadow-lg border border-[#444444] flex flex-col gap-7
-               w-full max-w-3xl relative mx-5'>
+               w-full max-w-6xl relative mx-5'>
               <span className='absolute top-3 right-7 text-2xl text-[#CD8A33] cursor-pointer'
                 onClick={() => setIsOpen(!isOpen)}
               >x</span>
@@ -717,7 +717,7 @@ export default function FormApplication() {
               <section className='flex flex-col gap-y-2'>
                 <h1 className='text-lg lg:text-2xl text-[#CD8A33] font-semibold'>
                   Final Section
-                  <span className='font-normal ml-1'>(for all)</span>
+                  {/* <span className='font-normal ml-1'>(for all)</span> */}
                 </h1>
                 <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">
                   How did you hear about AchieveMeter?
