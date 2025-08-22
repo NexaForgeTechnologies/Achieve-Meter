@@ -5,6 +5,7 @@ import HomeCont from "@/containers/HomeCont";
 import InsideMyAchieve from "@/containers/InsideMyAchieve";
 import TwoAudienceCont from "@/containers/TwoAudienceCont";
 import TwoTracksCont from "@/containers/TwoTracksCont";
+import VelocityCont from "@/containers/VelocityCont";
 import WhoItsForCont from "@/containers/WhoItsForCont";
 import WhyMyAchieveCont from "@/containers/WhyMyAchieveCont";
 
@@ -20,6 +21,8 @@ export default function Home() {
       <WhoItsForCont />
       <DifferenceCont />
       <TwoTracksCont />
+      <VelocityCont />
+
     </>
   );
 }

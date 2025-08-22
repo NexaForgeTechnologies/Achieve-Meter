@@ -1,6 +1,5 @@
 import InvestorHeroCont from "@/containers/InvestorHeroCont";
 import PreSeedCont from "@/containers/PreSeedCont";
-import VelocityCont from "@/containers/VelocityCont";
 import WhyNowCont from "@/containers/WhyNowCont";
 
 export default function Investors() {
@@ -9,7 +8,6 @@ export default function Investors() {
             <InvestorHeroCont />
             <WhyNowCont />
             <PreSeedCont />
-            <VelocityCont />
         </>
     );
 }

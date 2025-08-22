@@ -14,18 +14,6 @@ export default function TwoAudienceCont() {
                         </h1>
                     </div>
 
-                    <div className="flex items-center justify-center gap-x-6 md:gap-x-10 font-semibold">
-                        <span className="flex gap-x-2 items-center text-black">
-                            <span className={`bg-[#CD8A33] rounded-full w-2 h-2 flex-shrink-0 inline-block`}></span>
-                            For Individuals
-                        </span>
-
-                        <span className="flex gap-x-2 items-center text-black">
-                            <span className={`bg-[#CD8A33] rounded-full w-2 h-2 flex-shrink-0 inline-block`}></span>
-                            For Enterprise
-                        </span>
-                    </div>
-
                     <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div className="border border-[#B58A4C] bg-[#FCF7EE] p-5 flex flex-col justify-between gap-y-3 rounded-xl">
 

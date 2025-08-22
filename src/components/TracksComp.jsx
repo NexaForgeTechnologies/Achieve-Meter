@@ -1,12 +1,12 @@
 
-export default function TracksComp({ list1, list2, list3, hide,img }) {
+export default function TracksComp({ heading, list1, list2, list3, hide,img }) {
     return (
         <>
             <div className="border border-[#B58A4C] bg-white p-5 flex flex-col justify-between gap-y-3 rounded-xl">
 
                 <div className="flex gap-x-3 md:py-2 items-center">
                     <img src={img} alt="icon" className="w-10 md:w-12 " />
-                    <h1 className="text-[black] text-lg md:text-2xl font-semibold">For Enterprise</h1>
+                    <h1 className="text-[black] text-lg md:text-2xl font-semibold">{heading}</h1>
                 </div>
 
                 <ul className="flex flex-col gap-y-1 text-[#C2C2C2]">

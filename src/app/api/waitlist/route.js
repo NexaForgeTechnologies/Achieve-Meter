@@ -4,6 +4,9 @@ export async function POST(request) {
   try {
     const body = await request.json();
 
+    console.log(body);
+    
+
     const {
       membership_type,   // "individual" | "business"
       name,              // Full Name

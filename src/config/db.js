@@ -4,8 +4,8 @@ import mysql from "mysql2/promise";
 const db = mysql.createPool({
   host: "localhost",
   user: "root",
-  password: "",
-  database: "ACHIEVE_METER_DATABASE",
+  password: "1122",
+  database: "achieve-meter",
 });
 
 // ✅ export db as default so you can import db from "..."
