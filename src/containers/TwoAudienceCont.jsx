@@ -40,13 +40,8 @@ export default function TwoAudienceCont() {
                                         Organization-wide workforce development intelligence, without replacing your LMS
                                     </p>
                                 </li>
-                                //<li className={`flex items-start gap-x-2 mr-1`}>
-                                  //  <p className="text-xs md:text-base text-[#808080] relative -top-1">
-                                   //     Organization-wide workforce development intelligence, without
-                                   //     replacing your LMS
-                                  //  </p>
-                              //  </li>
-                            </ul>
+        
+                            </ul> 
                         </div>
 
                         <div className="border border-[#B58A4C] bg-[#E5B3521A] p-5 flex flex-col justify-between gap-y-3 rounded-xl">
