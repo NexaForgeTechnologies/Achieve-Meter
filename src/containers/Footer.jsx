@@ -28,10 +28,10 @@ export default function Footer() {
                         </Link>
 
                         {/* Email */}
-                        <Link href="mailto:grow@achievergrp.com">
+                        <Link href="mailto:Grow@achiever-grp.com">
                             <li className="flex items-start gap-x-2 hover:opacity-80 transition-opacity text-black">
                                 <img src="text.png" alt="Email" className="w-5 h-5" />
-                                <u className="break-all">grow@achievergrp.com</u>
+                                <u className="break-all">Grow@achiever-grp.com</u>
                             </li>
                         </Link>
 

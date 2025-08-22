@@ -36,7 +36,7 @@ export default function VelocityCont() {
                             />
                         </div>
 
-                        <p className="font-montserrat text-[#808080] font-normal text-center text-sm sm:text-md md:text-base  max-w-190">
+                        <p className="font-montserrat text-[#808080] font-normal text-center text-sm sm:text-md md:text-base max-w-190">
                             AchieveMeter is an Achiever Group Company
                         </p>
                     </div>

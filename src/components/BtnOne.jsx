@@ -11,8 +11,7 @@ export default function BtnOne({
 }) {
     return (
         <button
-            className={`${bgColor} ${hoverBgColor} ${textColor} ${hoverTextColor} ${borderColor} ${className} border font-normal 
-         py-1.5 px-2 sm:px-3 rounded-full text-xs sm:text-sm md:text-base lg:text-lg cursor-pointer`}
+            className={`${bgColor} ${hoverBgColor} ${textColor} ${hoverTextColor} ${borderColor} ${className} border font-normal py-1.5 px-2 sm:px-3 rounded-full text-xs sm:text-sm md:text-base lg:text-lg cursor-pointer`}
             onClick={onClick}
             type={typeSubmit}
         >

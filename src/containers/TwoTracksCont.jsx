@@ -4,7 +4,7 @@ export default function TwoTracksCont() {
     return (
         <>
         <section className="py-10 md:py-20">
-            <section className="flex flex-col bg-[#E5B3521A] w-screen ml-[calc(50%-50vw)] px-5 sm:px-10 md:px-18 lg:px-20 py-15 gap-y-5">
+            <section className="flex flex-col bg-[#FCF7EE] w-screen ml-[calc(50%-50vw)] px-5 sm:px-10 md:px-18 lg:px-20 py-15 gap-y-5">
 
                 <div className="flex flex-col items-center">
                     <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-start pb-5 flex flex-wrap max-w-120 gap-x-2 text-black">

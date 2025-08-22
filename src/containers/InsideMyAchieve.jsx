@@ -2,7 +2,7 @@ import InsideAchieveComp from "@/components/InsideAchieveComp";
 
 export default function InsideMyAchieve() {
     return (
-        <section className="flex flex-col justify-center items-center relative bg-[#E5B3521A] rounded-2xl py-10 sm:py-15 px-5 md:pax-7 my-10">
+        <section className="flex flex-col justify-center items-center relative bg-[#FCF7EE] rounded-2xl py-10 sm:py-15 px-5 md:pax-7 my-10">
 
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-center pb-5 -ml-3 text-black">
                 What's Inside{" "}

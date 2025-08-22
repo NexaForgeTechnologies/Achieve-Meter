@@ -37,7 +37,7 @@ export default function WhyMyAchieveCont() {
                         </li>
                         <li className={`flex items-center gap-x-2 mr-1 `}>
                             <span className={`bg-[#CD8A33] rounded-full w-2 h-2 flex-shrink-0`}></span>
-                            <p className="text-xs md:text-base text-[#808080] ">
+                            <p className="text-xs md:text-base text-[#808080]">
                                 100% private unless you choose to share or sync
                             </p>
                         </li>
@@ -48,9 +48,9 @@ export default function WhyMyAchieveCont() {
                             Join the Waitlist Now
                         </h1>
 
-                        <li className={`flex items-center gap-x-2 mr-1 `}>
-                            <span className={`bg-[#CD8A33] rounded-full w-2 h-2 flex-shrink-0`}></span>
-                            <p className="text-xs md:text-base text-[#808080] ">
+                        <li className={`flex items-start gap-x-2 mr-1 `}>
+                            <span className={`bg-[#CD8A33] rounded-full w-2 h-2 flex-shrink-0 relative top-2`}></span>
+                            <p className="text-xs md:text-base text-[#808080]">
                                 Be the first to access MyAchieve and unlock your future.
                             </p>
                         </li>
@@ -87,8 +87,8 @@ export default function WhyMyAchieveCont() {
                                 Not an LMS
                             </p>
                         </li>
-                        <li className={`flex items-center gap-x-2 mr-1 `}>
-                            <span className={`bg-[#CD8A33] rounded-full w-2 h-2 flex-shrink-0`}></span>
+                        <li className={`flex items-start gap-x-2 mr-1 `}>
+                            <span className={`bg-[#CD8A33] rounded-full w-2 h-2 flex-shrink-0 relative top-2`}></span>
                             <p className="text-xs md:text-base text-[#808080] ">
                                 AchieveMeter enhances your people systems by accelerating
                                 performance, potential, and wellbeing — in one intelligent layer.

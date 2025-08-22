@@ -1,6 +1,6 @@
 import DifferenceCont from "@/containers/DifferenceCont";
 import EnterpriseFeatureCont from "@/containers/EnterpriseFeatureCont";
-import FormApplication from "@/containers/FormApplication";
+import ForIndividualsCont from "@/containers/ForIndividualsCont";
 import HomeCont from "@/containers/HomeCont";
 import InsideMyAchieve from "@/containers/InsideMyAchieve";
 import TwoAudienceCont from "@/containers/TwoAudienceCont";
@@ -13,6 +13,7 @@ export default function Home() {
     <>
       <HomeCont />
       <TwoAudienceCont />
+      <ForIndividualsCont />
       <InsideMyAchieve />
       <WhyMyAchieveCont />
       <EnterpriseFeatureCont />

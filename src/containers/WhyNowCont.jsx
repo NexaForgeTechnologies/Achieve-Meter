@@ -27,7 +27,7 @@ export default function WhyNowCont() {
                     </div>
 
                     <div className="border border-[#B58A4C] bg-[#FCF7EE] flex flex-row items-center rounded-lg px-5 py-3 sm:py-5 gap-x-4 min-h-16">
-                        <img src="/strategy.png" alt="ai" className="w-7 sm:w-10 md:w-11 flex-shrink-0" />
+                        <img src="/revenue.png" alt="ai" className="w-7 sm:w-10 md:w-11 flex-shrink-0" />
                         <p className="font-inter text-black font-semibold text-start text-sm sm:text-md lg:text-lg ">
                             Dual revenue streams: B2C (subscriptions) + B2B
                             (enterprise licensing, white-labelling)
@@ -35,7 +35,7 @@ export default function WhyNowCont() {
                     </div>
 
                     <div className="border border-[#B58A4C] bg-[#FCF7EE] flex flex-row items-center rounded-lg px-5 py-3 sm:py-5 gap-x-4 min-h-16">
-                        <img src="/oval.png" alt="ai" className="w-7 sm:w-10 md:w-11 flex-shrink-0" />
+                        <img src="/integration.png" alt="ai" className="w-7 sm:w-10 md:w-11 flex-shrink-0" />
                         <p className="font-inter text-black font-semibold text-start text-sm sm:text-md lg:text-lg ">
                             Deep integration potential with HR tech, coaching
                             platforms, and performance tools
@@ -43,7 +43,7 @@ export default function WhyNowCont() {
                     </div>
 
                     <div className="border border-[#B58A4C] bg-[#FCF7EE] flex flex-row items-center rounded-lg px-5 py-3 sm:py-5 gap-x-4 min-h-16">
-                        <img src="/progress.png" alt="ai" className="w-7 sm:w-10 md:w-11 flex-shrink-0" />
+                        <img src="/partnerships.png" alt="ai" className="w-7 sm:w-10 md:w-11 flex-shrink-0" />
                         <p className="font-inter text-black font-semibold text-start text-sm sm:text-md lg:text-lg ">
                             Enterprise pilots + partnerships under development
                         </p>

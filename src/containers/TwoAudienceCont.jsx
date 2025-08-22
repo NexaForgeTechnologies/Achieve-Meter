@@ -27,7 +27,7 @@ export default function TwoAudienceCont() {
                     </div>
 
                     <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div className="border border-[#B58A4C] bg-[#E5B3521A] p-5 flex flex-col justify-between gap-y-3 rounded-xl">
+                        <div className="border border-[#B58A4C] bg-[#FCF7EE] p-5 flex flex-col justify-between gap-y-3 rounded-xl">
 
                             <div className="flex gap-x-5 md:py-2 items-center">
                                 <img src="/enterprise.png" alt="icon" className="w-10 md:w-10 " />
@@ -40,12 +40,10 @@ export default function TwoAudienceCont() {
                                         Organization-wide workforce development intelligence, without replacing your LMS
                                     </p>
                                 </li>
-                                 <li className={flex items-start gap-x-2 mr-1}>
-                                 </li>
-                            </ul> 
+                            </ul>
                         </div>
 
-                        <div className="border border-[#B58A4C] bg-[#E5B3521A] p-5 flex flex-col justify-between gap-y-3 rounded-xl">
+                        <div className="border border-[#B58A4C] bg-[#FCF7EE] p-5 flex flex-col justify-between gap-y-3 rounded-xl">
 
                             <div className="flex gap-x-5 md:py-2 items-center">
                                 <img src="/individual.png" alt="icon" className="w-10 md:w-12 " />
@@ -55,17 +53,8 @@ export default function TwoAudienceCont() {
                             <ul className="flex flex-col gap-y-1 text-[#C2C2C2]">
                                 <li className={`flex items-start gap-x-2 mr-1`}>
                                     <p className="text-xs md:text-base text-[#808080] relative -top-1">
-                                        Unlock Your Potential with MyAchieve
-                                    </p>
-                                </li>
-                                <li className={`flex items-start gap-x-2 mr-1`}>
-                                    <p className="text-xs md:text-base text-[#808080] relative -top-1">
-                                        Your personal growth system
-                                    </p>
-                                </li>
-                                <li className={`flex items-start gap-x-2 mr-1`}>
-                                    <p className="text-xs md:text-base text-[#808080] relative -top-1">
-                                        Powered by AI. Shaped by your values. Backed by your peers
+                                        Personal career coach - built-in acceleration with AI, structure, and
+                                        social validation
                                     </p>
                                 </li>
                             </ul>
