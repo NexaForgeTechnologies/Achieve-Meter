@@ -37,17 +37,16 @@ export default function TwoAudienceCont() {
                             <ul className="flex flex-col gap-y-1 text-[#C2C2C2]">
                                 <li className={`flex items-start gap-x-2 mr-1`}>
                                     <p className="text-xs md:text-base text-[#808080] relative -top-1">
-                                        Personal career coach - built-in acceleration with AI, structure, and
-                                        social validation
+                                        Organization-wide workforce development intelligence, without replacing your LMS
                                     </p>
                                 </li>
-                                <li className={`flex items-start gap-x-2 mr-1`}>
-                                    <p className="text-xs md:text-base text-[#808080] relative -top-1">
-                                        Organization-wide workforce development intelligence, without
-                                        replacing your LMS
-                                    </p>
-                                </li>
-                            </ul>
+                                 <li className={`flex items-start gap-x-2 mr-1`}>
+                                  <p className="text-xs md:text-base text-[#808080] relative -top-1">
+                                       Organization-wide workforce development intelligence, without
+                                       replacing your LMS
+                                  </p>
+                                 </li>
+                            </ul> 
                         </div>
 
                         <div className="border border-[#B58A4C] bg-[#E5B3521A] p-5 flex flex-col justify-between gap-y-3 rounded-xl">
