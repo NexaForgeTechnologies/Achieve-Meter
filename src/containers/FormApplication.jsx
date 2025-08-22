@@ -22,6 +22,7 @@ export default function FormApplication() {
     company_industry: [],  // ✅ must stay array for checkboxes
     interests: [],         // ✅ must stay array for checkboxes
     source: [],            // ✅ must stay array for checkboxes
+    source_other: "",
     invite_option: "",     // Invite Option
   });
 
@@ -405,7 +406,7 @@ export default function FormApplication() {
                       </span>
                     </div>
                     <input
-                      type="email"
+                      type="text"
                       name="company_name"
                       placeholder="Email Address"
                       value={formData.company_name}
@@ -532,10 +533,9 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        name="company_industry"
                         value="LMS (Learning Management System)"
                         checked={formData.company_industry.includes("LMS (Learning Management System)")}
-                        onChange={handleChange}
+                        onChange={(e) => handleCheckboxChange(e, "company_industry")}
                         className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
@@ -548,10 +548,9 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        name="company_industry"
                         value="HRIS Platform"
                         checked={formData.company_industry.includes("HRIS Platform")}
-                        onChange={handleChange}
+                        onChange={(e) => handleCheckboxChange(e, "company_industry")}
                         className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
@@ -564,10 +563,9 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        name="company_industry"
                         value="Appraisal System"
                         checked={formData.company_industry.includes("Appraisal System")}
-                        onChange={handleChange}
+                        onChange={(e) => handleCheckboxChange(e, "company_industry")}
                         className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
@@ -580,10 +578,9 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        name="company_industry"
                         value="Internal Coaching"
                         checked={formData.company_industry.includes("Internal Coaching")}
-                        onChange={handleChange}
+                        onChange={(e) => handleCheckboxChange(e, "company_industry")}
                         className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
@@ -596,10 +593,9 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        name="company_industry"
                         value="None of the above"
                         checked={formData.company_industry.includes("None of the above")}
-                        onChange={handleChange}
+                        onChange={(e) => handleCheckboxChange(e, "company_industry")}
                         className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
@@ -622,10 +618,9 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        name="interests"
                         value="Demo of AchieveMeter"
                         checked={formData.interests.includes("Demo of AchieveMeter")}
-                        onChange={handleChange}
+                        onChange={(e) => handleCheckboxChange(e, "interests")}
                         className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
@@ -638,10 +633,9 @@ export default function FormApplication() {
                     <div>
                       <input
                         type="checkbox"
-                        name="interests"
                         value="Joining the enterprise pilot"
                         checked={formData.interests.includes("Joining the enterprise pilot")}
-                        onChange={handleChange}
+                        onChange={(e) => handleCheckboxChange(e, "interests")}
                         className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
@@ -657,7 +651,7 @@ export default function FormApplication() {
                         name="interests"
                         value="White-labelling options"
                         checked={formData.interests.includes("White-labelling options")}
-                        onChange={handleChange}
+                        onChange={(e) => handleCheckboxChange(e, "interests")}
                         className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
@@ -673,7 +667,7 @@ export default function FormApplication() {
                         name="interests"
                         value="Receiving the enterprise pack"
                         checked={formData.interests.includes("Receiving the enterprise pack")}
-                        onChange={handleChange}
+                        onChange={(e) => handleCheckboxChange(e, "interests")}
                         className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
@@ -689,7 +683,7 @@ export default function FormApplication() {
                         name="interests"
                         value="Strategic partnership"
                         checked={formData.interests.includes("Strategic partnership")}
-                        onChange={handleChange}
+                        onChange={(e) => handleCheckboxChange(e, "interests")}
                         className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
@@ -703,72 +697,61 @@ export default function FormApplication() {
 
               {/* Final Confirmation */}
               <section className='flex flex-col gap-y-2'>
-                <h1 className='text-lg lg:text-2xl text-[#CD8A33] font-semibold'>Final Section
-                  <span className='font-normal ml-1'>(for all)</span></h1>
-                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">How did you hear about AchieveMeter?</p>
+                <h1 className='text-lg lg:text-2xl text-[#CD8A33] font-semibold'>
+                  Final Section
+                  <span className='font-normal ml-1'>(for all)</span>
+                </h1>
+                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">
+                  How did you hear about AchieveMeter?
+                </p>
 
-                <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
-                  <label className="flex items-start gap-x-3">
-                    <div>
-                      <input
-                        type="checkbox"
-                        name='linkedin'
-                        value={formData.source.includes("LinkedIn")}
-                        onChange={handleChange}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                      />
-                      <span className='text-[#808080] text-base md:text-lg'>
-                        LinkedIn
-                      </span>
-                    </div>
+                <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-y-2">
+
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      value="LinkedIn"
+                      checked={formData.source.includes("LinkedIn")}
+                      onChange={(e) => handleCheckboxChange(e, "source")}
+                      className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer"
+                    />
+                    <span className='text-[#808080] text-base md:text-lg'>LinkedIn</span>
                   </label>
 
-                  <label className="flex items-start gap-x-3">
-                    <div>
-                      <input
-                        type="checkbox"
-                        value="Event or webinar"
-                        checked={formData.source.includes("Event or webinar")}
-                        onChange={(e) => handleCheckboxChange(e, "source")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                      />
-                      <span className='text-[#808080] text-base md:text-lg'>
-                        Event or webinar
-                      </span>
-                    </div>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      value="Event or Webinar"
+                      checked={formData.source.includes("Event or Webinar")}
+                      onChange={(e) => handleCheckboxChange(e, "source")}
+                      className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer"
+                    />
+                    <span className='text-[#808080] text-base md:text-lg'>Event or Webinar</span>
                   </label>
 
-                  <label className="flex items-start gap-x-3">
-                    <div>
-                      <input
-                        type="checkbox"
-                        value="Procurement Plug Ecosystem"
-                        checked={formData.source.includes("Procurement Plug Ecosystem")}
-                        onChange={(e) => handleCheckboxChange(e, "source")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                      />
-                      <span className='text-[#808080] text-base md:text-lg'>
-                        Newsletter
-                      </span>
-                    </div>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      value="Newsletter"
+                      checked={formData.source.includes("Newsletter")}
+                      onChange={(e) => handleCheckboxChange(e, "source")}
+                      className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer"
+                    />
+                    <span className='text-[#808080] text-base md:text-lg'>Newsletter</span>
                   </label>
 
-                  <label className="flex items-start gap-x-3">
-                    <div>
-                      <input
-                        type="checkbox"
-                        value="Event or Webinar"
-                        checked={formData.source.includes("Event or Webinar")}
-                        onChange={(e) => handleCheckboxChange(e, "source")}
-                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                      />
-                      <span className='text-[#808080] text-base md:text-lg'>
-                        Word of mouth
-                      </span>
-                    </div>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      value="Word of mouth"
+                      checked={formData.source.includes("Word of mouth")}
+                      onChange={(e) => handleCheckboxChange(e, "source")}
+                      className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer"
+                    />
+                    <span className='text-[#808080] text-base md:text-lg'>Word of mouth</span>
                   </label>
 
-                  <label className="flex items-start gap-x-3">
+                  <label className="flex items-center">
                     <div>
                       <input
                         type="checkbox"
@@ -779,9 +762,12 @@ export default function FormApplication() {
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
                         Other (please specify)
-                        <input type="text"
-                          value={formData.source}
-                          onChange={(e) => setFormData({ ...formData, source_other: e.target.value })}
+                        <input
+                          type="text"
+                          value={formData.source_other}
+                          onChange={(e) =>
+                            setFormData({ ...formData, source_other: e.target.value })
+                          }
                           placeholder='_____________'
                           className='pl-2 outline-none border-none bg-transparent' />
                       </span>

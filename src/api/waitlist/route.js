@@ -18,6 +18,7 @@ export async function POST(request) {
       company_industry,
       interests,
       source,
+      source_other,
       invite_option,
     } = body;
 
@@ -70,6 +71,7 @@ export async function POST(request) {
       company_industry,
       interests,
       source,
+      source_other,
       invite_option,
       )
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -88,6 +90,7 @@ export async function POST(request) {
         JSON.stringify(company_industry) || null,
         JSON.stringify(interests) || null,
         JSON.stringify(source) || null,
+        JSON.stringify(source_other) || null,
         invite_option || null,
       ]
     );
