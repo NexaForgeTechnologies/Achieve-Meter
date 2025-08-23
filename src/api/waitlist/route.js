@@ -1,77 +1,44 @@
 import db from "@/config/db";
+import nodemailer from "nodemailer";
 
 export async function POST(request) {
   try {
     const body = await request.json();
 
     const {
-      membership_type,   // "individual" | "business"
-
-      // Individual
+      membership_type,
       name,
+      job,
+      company_name,
       email,
       linkedin,
-      hopes,
-      early_access,
-
-      // Business
-      contact_name,
-      company_name,
-      company_size,
-      business_email,
-      company_industry,
+      country,
       interests,
-
-      // Shared
+      membership_options,
+      seniority,
+      goals,
+      benefits,
       source,
       source_other,
       invite_option,
     } = body;
 
-    // ---- Validation ----
-    if (!membership_type) {
-      return Response.json(
-        { message: "Membership type is required." },
-        { status: 400 }
-      );
-    }
-
-    if (membership_type === "individual") {
-      if (!name || !email) {
-        return Response.json(
-          { message: "Name and email are required for individuals." },
-          { status: 400 }
-        );
-      }
-    }
-
-    if (membership_type === "business") {
-      if (!contact_name || !company_name || !business_email) {
-        return Response.json(
-          {
-            message:
-              "Contact name, company name, and business email are required for businesses.",
-          },
-          { status: 400 }
-        );
-      }
-    }
-
     // ---- Insert into database ----
     const [result] = await db.execute(
-      `INSERT INTO waitlist (
-        membership_type,
-        name,
-        email,
-        linkedin,
-        hopes,
-        early_access,
-        contact_name,
-        company_name,
-        company_size,
-        business_email,
-        company_industry,
-        interests,
+      `INSERT INTO waitlist 
+      (
+        membership_type, 
+        name, 
+        job_title, 
+        company_name, 
+        email, 
+        linkedin, 
+        country, 
+        interests, 
+        membership_options,
+        seniority,
+        goals,
+        benefits,
         source,
         source_other,
         invite_option
@@ -80,23 +47,21 @@ export async function POST(request) {
       [
         membership_type || null,
         name || null,
+        job || null,
+        company_name || null,
         email || null,
         linkedin || null,
-        hopes ? JSON.stringify(hopes) : null,
-        early_access || null,
-        contact_name || null,
-        company_name || null,
-        company_size || null,
-        business_email || null,
-        company_industry ? JSON.stringify(company_industry) : null,
-        interests ? JSON.stringify(interests) : null,
-        source ? JSON.stringify(source) : null,
+        country || null,
+        JSON.stringify(interests) || null,
+        JSON.stringify(membership_options) || null,
+        seniority || null,
+        goals || null,
+        benefits || null,
+        JSON.stringify(source) || null,
         source_other || null,
         invite_option || null,
       ]
     );
-
-
 
     // ---- Nodemailer setup ----
     const transporter = nodemailer.createTransport({
@@ -189,17 +154,18 @@ export async function POST(request) {
       console.error("❌ Failed to send user email:", err)
     );
 
-
+    // ✅ Respond immediately
     return Response.json(
       {
         success: true,
-        message: "✅ Application submitted successfully. Thank you for joining the waitlist!",
+        message:
+          "✅ Application submitted successfully. Emails are being sent in background.",
         applicationId: result.insertId,
       },
       { status: 200 }
     );
   } catch (error) {
-    console.error("❌ Error inserting into database:", error);
+    console.error("❌ Error inserting into database or sending email:", error);
     return Response.json(
       {
         success: false,

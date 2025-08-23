@@ -5,68 +5,93 @@ import useFormStore from '@/useFormStore';
 import axios from 'axios';
 
 export default function FormApplication() {
-  const [formData, setFormData] = useState({
-    // Section 1
-    membership_type: "",   // "individual" | "business"
+  // ---------------- STATES ----------------
+  const [individual, setIndividual] = useState({
+    membership_type: "individual",
 
-    name: "",              // Full Name
-    email: "",             // Email Address
-    linkedin: "",          // LinkedIn Profile (optional)
+    // Individual fields
+    name: "",
+    email: "",
+    linkedin: "",
     hopes: [],
-    early_access: "",      // Yes or NO
+    early_access: "",
 
-    contact_name: "",      // Contact Name
-    company_name: "",      // Company Name
-    company_size: "",      // Company Size
-    business_email: "",    // Business Email
-    company_industry: [],  // ✅ must stay array for checkboxes
-    interests: [],         // ✅ must stay array for checkboxes
-    source: [],            // ✅ must stay array for checkboxes
+    // Shared fields
+    source: [],
     source_other: "",
-    invite_option: "",     // Invite Option
+    invite_option: "",
   });
 
+  const [business, setBusiness] = useState({
+    membership_type: "business",
+
+    // Business fields
+    contact_name: "",
+    company_name: "",
+    company_size: "",
+    business_email: "",
+    company_industry: [],
+    interests: [],
+
+    // Shared fields
+    source: [],
+    source_other: "",
+    invite_option: "",
+  });
+
+  // ---------------- HANDLERS ----------------
   // For text, email, radio inputs
-  const handleChange = (e) => {
-    const { name, value, type } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "radio" ? value : value, // radio handled same as text
-    }));
+  const handleChange = (e, type = "individual") => {
+    const { name, value } = e.target;
+    if (type === "individual") {
+      setIndividual((prev) => ({ ...prev, [name]: value }));
+    } else {
+      setBusiness((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   // For checkboxes (multi-select arrays)
-  const handleCheckboxChange = (e, key) => {
+  const handleCheckboxChange = (e, key, type = "individual") => {
     const { value, checked } = e.target;
-
-    setFormData((prev) => {
+    const updater = (prev) => {
       let updatedArray = [...prev[key]];
-
-      if (checked) {
-        if (!updatedArray.includes(value)) {
-          updatedArray.push(value); // ✅ avoid duplicates
-        }
-      } else {
-        updatedArray = updatedArray.filter((item) => item !== value); // remove
+      if (checked && !updatedArray.includes(value)) {
+        updatedArray.push(value);
+      } else if (!checked) {
+        updatedArray = updatedArray.filter((item) => item !== value);
       }
-
       return { ...prev, [key]: updatedArray };
-    });
+    };
+
+    if (type === "individual") {
+      setIndividual(updater);
+    } else {
+      setBusiness(updater);
+    }
   };
 
-  // Submit handler
-  const handleSubmit = async (e) => {
+  // ---------------- SUBMIT ----------------
+  const handleSubmit = async (e, type = "individual") => {
     e.preventDefault();
-    console.log(formData);
-
+    console.log(individual);
+    console.log(business);
     try {
-      const res = await axios.post("/api/waitlist", formData);
-      alert(res.data.message);
+      if (type === "individual") {
+        console.log("Submitting Individual:", individual);
+        const res = await axios.post("/api/waitlist", individual);
+        alert(res.data.message);
+      } else {
+        console.log("Submitting Business:", business);
+        const res = await axios.post("/api/waitlist", business);
+        alert(res.data.message);
+      }
     } catch (err) {
       console.error(err);
       alert("Error submitting form");
     }
   };
+
+
 
   const { isOpen, setIsOpen } = useFormStore();
 
@@ -137,7 +162,7 @@ export default function FormApplication() {
                         type='radio'
                         name="membership_type"
                         value="business"
-                        checked={membership === "business" || formData.membership_type === "business"}
+                        checked={membership === "business"}
                         onChange={(e) => {
                           setMembership(e.target.value);
                           handleChange(e);
@@ -157,8 +182,7 @@ export default function FormApplication() {
                 <>
                   < section className='flex flex-col gap-y-2'>
                     <h1 className='text-lg lg:text-2xl text-[#CD8A33] font-semibold'>For Individuals
-                      {/* <span className='font-normal ml-1'></span> */}
-                      </h1>
+                    </h1>
 
                     <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-3">
 
@@ -173,13 +197,12 @@ export default function FormApplication() {
                           type="text"
                           name="name"
                           placeholder="Full Name"
-                          value={formData.name}
-                          onChange={handleChange}
+                          value={individual.name}
+                          onChange={(e) => handleChange(e, "individual")}
                           required
                           className="appearance-none w-full bg-transparent border border-[#444444] rounded-md px-3 py-2 text-[#808080] placeholder-[#808080] focus:outline-none"
                         />
                       </label>
-
 
                       {/* Email */}
                       <label className="flex flex-col justify-start gap-y-2">
@@ -192,8 +215,8 @@ export default function FormApplication() {
                           type="email"
                           name="email"
                           placeholder="Email Address"
-                          value={formData.email}
-                          onChange={handleChange}
+                          value={individual.email}
+                          onChange={(e) => handleChange(e, "individual")}
                           required
                           className="appearance-none w-full bg-transparent border border-[#444444] rounded-md px-3 py-2 text-[#808080] placeholder-[#808080] focus:outline-none"
                         />
@@ -211,15 +234,12 @@ export default function FormApplication() {
                         type="text"
                         name="linkedin"
                         placeholder="LinkedIn Profile (optional)"
-                        value={formData.linkedin}
-                        onChange={handleChange}
+                        value={individual.linkedin}
+                        onChange={(e) => handleChange(e, "individual")}
                         className="appearance-none w-full bg-transparent border border-[#444444] rounded-md px-3 py-2 text-[#808080] placeholder-[#808080] focus:outline-none"
                       />
                     </label>
                   </section>
-
-
-
 
                   <section className='flex flex-col gap-y-2'>
                     <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">What are you hoping to achieve with AchieveMeter?(Tick all that apply)</p>
@@ -230,8 +250,8 @@ export default function FormApplication() {
                           <input
                             type="checkbox"
                             value="Career direction / clarity"
-                            checked={formData.hopes.includes("Career direction / clarity")}
-                            onChange={(e) => handleCheckboxChange(e, "hopes")}
+                            checked={individual.hopes.includes("Career direction / clarity")}
+                            onChange={(e) => handleCheckboxChange(e, "hopes", "individual")}
                             className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                           />
                           <span className='text-[#808080] text-base md:text-lg'>
@@ -245,8 +265,8 @@ export default function FormApplication() {
                           <input
                             type="checkbox"
                             value="Promotion readiness"
-                            checked={formData.hopes.includes("Promotion readiness")}
-                            onChange={(e) => handleCheckboxChange(e, "hopes")}
+                            checked={individual.hopes.includes("Promotion readiness")}
+                            onChange={(e) => handleCheckboxChange(e, "hopes", "individual")}
                             className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                           />
                           <span className='text-[#808080] text-base md:text-lg'>
@@ -260,8 +280,8 @@ export default function FormApplication() {
                           <input
                             type="checkbox"
                             value="Goal setting and tracking"
-                            checked={formData.hopes.includes("Goal setting and tracking")}
-                            onChange={(e) => handleCheckboxChange(e, "hopes")}
+                            checked={individual.hopes.includes("Goal setting and tracking")}
+                            onChange={(e) => handleCheckboxChange(e, "hopes", "individual")}
                             className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                           />
                           <span className='text-[#808080] text-base md:text-lg'>
@@ -275,8 +295,8 @@ export default function FormApplication() {
                           <input
                             type="checkbox"
                             value="Wellbeing and emotional balance"
-                            checked={formData.hopes.includes("Wellbeing and emotional balance")}
-                            onChange={(e) => handleCheckboxChange(e, "hopes")}
+                            checked={individual.hopes.includes("Wellbeing and emotional balance")}
+                            onChange={(e) => handleCheckboxChange(e, "hopes", "individual")}
                             className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                           />
                           <span className='text-[#808080] text-base md:text-lg'>
@@ -290,8 +310,8 @@ export default function FormApplication() {
                           <input
                             type="checkbox"
                             value="External coaching or mentoring"
-                            checked={formData.hopes.includes("External coaching or mentoring")}
-                            onChange={(e) => handleCheckboxChange(e, "hopes")}
+                            checked={individual.hopes.includes("External coaching or mentoring")}
+                            onChange={(e) => handleCheckboxChange(e, "hopes", "individual")}
                             className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                           />
                           <span className='text-[#808080] text-base md:text-lg'>
@@ -305,8 +325,8 @@ export default function FormApplication() {
                           <input
                             type="checkbox"
                             value="Enterprise Transformation Strategy"
-                            checked={formData.hopes.includes("Enterprise Transformation Strategy")}
-                            onChange={(e) => handleCheckboxChange(e, "hopes")}
+                            checked={individual.hopes.includes("Enterprise Transformation Strategy")}
+                            onChange={(e) => handleCheckboxChange(e, "hopes", "individual")}
                             className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                           />
                           <span className='text-[#808080] text-base md:text-lg'>
@@ -320,8 +340,8 @@ export default function FormApplication() {
                           <input
                             type="checkbox"
                             value="Personal development bootcamps"
-                            checked={formData.hopes.includes("Personal development bootcamps")}
-                            onChange={(e) => handleCheckboxChange(e, "hopes")}
+                            checked={individual.hopes.includes("Personal development bootcamps")}
+                            onChange={(e) => handleCheckboxChange(e, "hopes", "individual")}
                             className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                           />
                           <span className='text-[#808080] text-base md:text-lg'>
@@ -335,8 +355,8 @@ export default function FormApplication() {
                           <input
                             type="checkbox"
                             value="Peer validation and feedback"
-                            checked={formData.hopes.includes("Peer validation and feedback")}
-                            onChange={(e) => handleCheckboxChange(e, "hopes")}
+                            checked={individual.hopes.includes("Peer validation and feedback")}
+                            onChange={(e) => handleCheckboxChange(e, "hopes", "individual")}
                             className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                           />
                           <span className='text-[#808080] text-base md:text-lg'>
@@ -357,8 +377,8 @@ export default function FormApplication() {
                             type="radio"
                             name="early_access"
                             value="Yes"
-                            checked={formData.early_access === "Yes"}
-                            onChange={handleChange}
+                            checked={individual.early_access === "Yes"}
+                            onChange={(e) => handleChange(e, "individual")}
                             className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                           />
                           <span className='text-[#808080] text-base md:text-lg'>
@@ -373,8 +393,8 @@ export default function FormApplication() {
                             type='radio'
                             name="early_access"
                             value="No"
-                            checked={formData.early_access === "No"}
-                            onChange={handleChange}
+                            checked={individual.early_access === "No"}
+                            onChange={(e) => handleChange(e, "individual")}
                             className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                           />
                           <span className='text-[#808080] text-base md:text-lg'>
@@ -392,13 +412,11 @@ export default function FormApplication() {
 
                 <>
                   <section className='flex flex-col gap-y-2'>
-                    <h1 className='text-lg lg:text-2xl text-[#CD8A33] font-semibold'>For Business / Enterprise
-                      {/* <span className='font-normal ml-1'> (conditional logic: show if “Business” is ticked)</span> */}
-                      </h1>
+                    <h1 className='text-lg lg:text-2xl text-[#CD8A33] font-semibold'>For Business / Enterprise</h1>
 
                     <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-3">
 
-                      {/* Name */}
+                      {/* Contact Name */}
                       <label className="flex flex-col justify-start gap-y-2">
                         <div>
                           <span className='text-[#1B1B1B] text-base md:text-xl'>
@@ -409,13 +427,14 @@ export default function FormApplication() {
                           type="text"
                           name="contact_name"
                           placeholder="Full Name"
-                          value={formData.contact_name}
-                          onChange={handleChange}
+                          value={business.contact_name}
+                          onChange={(e) => handleChange(e, "business")}
                           required
                           className="appearance-none w-full bg-transparent border border-[#444444] rounded-md px-3 py-2 text-[#808080] placeholder-[#808080] focus:outline-none"
                         />
                       </label>
 
+                      {/* Company Name */}
                       <label className="flex flex-col justify-start gap-y-2">
                         <div>
                           <span className='text-[#1B1B1B] text-base md:text-xl'>
@@ -425,9 +444,9 @@ export default function FormApplication() {
                         <input
                           type="text"
                           name="company_name"
-                          placeholder="Email Address"
-                          value={formData.company_name}
-                          onChange={handleChange}
+                          placeholder="Company Name"
+                          value={business.company_name}
+                          onChange={(e) => handleChange(e, "business")}
                           required
                           className="appearance-none w-full bg-transparent border border-[#444444] rounded-md px-3 py-2 text-[#808080] placeholder-[#808080] focus:outline-none"
                         />
@@ -435,7 +454,7 @@ export default function FormApplication() {
 
                     </div>
 
-
+                    {/* Business Email */}
                     <label className="flex flex-col justify-start gap-y-2">
                       <div>
                         <span className='text-[#1B1B1B] text-base md:text-xl'>
@@ -446,348 +465,174 @@ export default function FormApplication() {
                         type="text"
                         name="business_email"
                         placeholder="Enter Business Email Address"
-                        value={formData.business_email}
-                        onChange={handleChange}
+                        value={business.business_email}
+                        onChange={(e) => handleChange(e, "business")}
+                        required
                         className="appearance-none w-full bg-transparent border border-[#444444] rounded-md px-3 py-2 text-[#808080] placeholder-[#808080] focus:outline-none"
                       />
                     </label>
                   </section>
 
+                  {/* Company Size */}
                   <section className='flex flex-col gap-y-2'>
                     <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">Company Size</p>
 
                     <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="radio"
-                            name="company_size"
-                            value="1–10 employees"
-                            checked={formData.company_size === "1–10 employees"}
-                            onChange={handleChange}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            1–10 employees
-                          </span>
-                        </div>
-                      </label>
-
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="radio"
-                            name="company_size"
-                            value="11–50 employees"
-                            checked={formData.company_size === "11–50 employees"}
-                            onChange={handleChange}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            11–50 employees
-                          </span>
-                        </div>
-                      </label>
-
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="radio"
-                            name="company_size"
-                            value="51–250 employees"
-                            checked={formData.company_size === "51–250 employees"}
-                            onChange={handleChange}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            51–250 employees
-                          </span>
-                        </div>
-                      </label>
-
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="radio"
-                            name="company_size"
-                            value="251–1000 employees"
-                            checked={formData.company_size === "251–1000 employees"}
-                            onChange={handleChange}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            251–1000 employees
-                          </span>
-                        </div>
-                      </label>
-
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="radio"
-                            name="company_size"
-                            value="1000+ employees"
-                            checked={formData.company_size === "1000+ employees"}
-                            onChange={handleChange}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            1000+ employees
-                          </span>
-                        </div>
-                      </label>
+                      {["1–10 employees", "11–50 employees", "51–250 employees", "251–1000 employees", "1000+ employees"].map(size => (
+                        <label key={size} className="flex items-start gap-x-3">
+                          <div>
+                            <input
+                              type="radio"
+                              name="company_size"
+                              value={size}
+                              checked={business.company_size === size}
+                              onChange={(e) => handleChange(e, "business")}
+                              required
+                              className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                            />
+                            <span className='text-[#808080] text-base md:text-lg'>
+                              {size}
+                            </span>
+                          </div>
+                        </label>
+                      ))}
                     </div>
                   </section>
 
-
+                  {/* Development Setup */}
                   <section className='flex flex-col gap-y-2'>
                     <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">
                       What is your current development setup?(Tick all that apply)
                     </p>
 
                     <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="checkbox"
-                            value="LMS (Learning Management System)"
-                            checked={formData.company_industry.includes("LMS (Learning Management System)")}
-                            onChange={(e) => handleCheckboxChange(e, "company_industry")}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            LMS (Learning Management System)
-                          </span>
-                        </div>
-                      </label>
-
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="checkbox"
-                            value="HRIS Platform"
-                            checked={formData.company_industry.includes("HRIS Platform")}
-                            onChange={(e) => handleCheckboxChange(e, "company_industry")}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            HRIS Platform
-                          </span>
-                        </div>
-                      </label>
-
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="checkbox"
-                            value="Appraisal System"
-                            checked={formData.company_industry.includes("Appraisal System")}
-                            onChange={(e) => handleCheckboxChange(e, "company_industry")}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            Appraisal System
-                          </span>
-                        </div>
-                      </label>
-
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="checkbox"
-                            value="Internal Coaching"
-                            checked={formData.company_industry.includes("Internal Coaching")}
-                            onChange={(e) => handleCheckboxChange(e, "company_industry")}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            Internal Coaching
-                          </span>
-                        </div>
-                      </label>
-
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="checkbox"
-                            value="None of the above"
-                            checked={formData.company_industry.includes("None of the above")}
-                            onChange={(e) => handleCheckboxChange(e, "company_industry")}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            None of the above
-                          </span>
-                        </div>
-                      </label>
+                      {[
+                        "LMS (Learning Management System)",
+                        "HRIS Platform",
+                        "Appraisal System",
+                        "Internal Coaching",
+                        "None of the above"
+                      ].map(option => (
+                        <label key={option} className="flex items-start gap-x-3">
+                          <div>
+                            <input
+                              type="checkbox"
+                              value={option}
+                              checked={business.company_industry.includes(option)}
+                              onChange={(e) => handleCheckboxChange(e, "company_industry", "business")}
+                              className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                            />
+                            <span className='text-[#808080] text-base md:text-lg'>
+                              {option}
+                            </span>
+                          </div>
+                        </label>
+                      ))}
                     </div>
                   </section>
 
-
-
+                  {/* Interests */}
                   <section className='flex flex-col gap-y-2'>
                     <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">
                       What are you interested in?
                     </p>
 
                     <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="checkbox"
-                            value="Demo of AchieveMeter"
-                            checked={formData.interests.includes("Demo of AchieveMeter")}
-                            onChange={(e) => handleCheckboxChange(e, "interests")}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            Demo of AchieveMeter
-                          </span>
-                        </div>
-                      </label>
-
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="checkbox"
-                            value="Joining the enterprise pilot"
-                            checked={formData.interests.includes("Joining the enterprise pilot")}
-                            onChange={(e) => handleCheckboxChange(e, "interests")}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            Joining the enterprise pilot
-                          </span>
-                        </div>
-                      </label>
-
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="checkbox"
-                            name="interests"
-                            value="White-labelling options"
-                            checked={formData.interests.includes("White-labelling options")}
-                            onChange={(e) => handleCheckboxChange(e, "interests")}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            White-labelling options
-                          </span>
-                        </div>
-                      </label>
-
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="checkbox"
-                            name="interests"
-                            value="Receiving the enterprise pack"
-                            checked={formData.interests.includes("Receiving the enterprise pack")}
-                            onChange={(e) => handleCheckboxChange(e, "interests")}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            Receiving the enterprise pack
-                          </span>
-                        </div>
-                      </label>
-
-                      <label className="flex items-start gap-x-3">
-                        <div>
-                          <input
-                            type="checkbox"
-                            name="interests"
-                            value="Strategic partnership"
-                            checked={formData.interests.includes("Strategic partnership")}
-                            onChange={(e) => handleCheckboxChange(e, "interests")}
-                            className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
-                          />
-                          <span className='text-[#808080] text-base md:text-lg'>
-                            Strategic partnership
-                          </span>
-                        </div>
-                      </label>
+                      {[
+                        "Demo of AchieveMeter",
+                        "Joining the enterprise pilot",
+                        "White-labelling options",
+                        "Receiving the enterprise pack",
+                        "Strategic partnership"
+                      ].map(option => (
+                        <label key={option} className="flex items-start gap-x-3">
+                          <div>
+                            <input
+                              type="checkbox"
+                              value={option}
+                              checked={business.interests.includes(option)}
+                              onChange={(e) => handleCheckboxChange(e, "interests", "business")}
+                              className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
+                            />
+                            <span className='text-[#808080] text-base md:text-lg'>
+                              {option}
+                            </span>
+                          </div>
+                        </label>
+                      ))}
                     </div>
                   </section>
                 </>
               )}
-
               {/* Final Confirmation */}
               <section className='flex flex-col gap-y-2'>
                 <h1 className='text-lg lg:text-2xl text-[#CD8A33] font-semibold'>
                   Final Section
-                  {/* <span className='font-normal ml-1'>(for all)</span> */}
                 </h1>
                 <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">
                   How did you hear about AchieveMeter?
                 </p>
 
                 <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-y-2">
-
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      value="LinkedIn"
-                      checked={formData.source.includes("LinkedIn")}
-                      onChange={(e) => handleCheckboxChange(e, "source")}
-                      className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer"
-                    />
-                    <span className='text-[#808080] text-base md:text-lg'>LinkedIn</span>
-                  </label>
-
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      value="Event or Webinar"
-                      checked={formData.source.includes("Event or Webinar")}
-                      onChange={(e) => handleCheckboxChange(e, "source")}
-                      className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer"
-                    />
-                    <span className='text-[#808080] text-base md:text-lg'>Event or Webinar</span>
-                  </label>
-
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      value="Newsletter"
-                      checked={formData.source.includes("Newsletter")}
-                      onChange={(e) => handleCheckboxChange(e, "source")}
-                      className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer"
-                    />
-                    <span className='text-[#808080] text-base md:text-lg'>Newsletter</span>
-                  </label>
-
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      value="Word of mouth"
-                      checked={formData.source.includes("Word of mouth")}
-                      onChange={(e) => handleCheckboxChange(e, "source")}
-                      className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer"
-                    />
-                    <span className='text-[#808080] text-base md:text-lg'>Word of mouth</span>
-                  </label>
+                  {["LinkedIn", "Event or Webinar", "Newsletter", "Word of mouth"].map((option) => (
+                    <label key={option} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        value={option}
+                        checked={
+                          membership === "individual"
+                            ? individual.source.includes(option)
+                            : business.source.includes(option)
+                        }
+                        onChange={(e) =>
+                          handleCheckboxChange(
+                            e,
+                            "source",
+                            membership === "individual" ? "individual" : "business"
+                          )
+                        }
+                        className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer"
+                      />
+                      <span className='text-[#808080] text-base md:text-lg'>{option}</span>
+                    </label>
+                  ))}
 
                   <label className="flex items-center">
                     <div>
                       <input
                         type="checkbox"
                         value="Other"
-                        checked={formData.source.includes("Other")}
-                        onChange={(e) => handleCheckboxChange(e, "source")}
+                        checked={
+                          membership === "individual"
+                            ? individual.source.includes("Other")
+                            : business.source.includes("Other")
+                        }
+                        onChange={(e) =>
+                          handleCheckboxChange(
+                            e,
+                            "source",
+                            membership === "individual" ? "individual" : "business"
+                          )
+                        }
                         className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
                         Other (please specify)
                         <input
                           type="text"
-                          value={formData.source_other}
+                          value={
+                            membership === "individual"
+                              ? individual.source_other
+                              : business.source_other
+                          }
                           onChange={(e) =>
-                            setFormData({ ...formData, source_other: e.target.value })
+                            membership === "individual"
+                              ? setIndividual({ ...individual, source_other: e.target.value })
+                              : setBusiness({ ...business, source_other: e.target.value })
                           }
                           placeholder='_____________'
-                          className='pl-2 outline-none border-none bg-transparent' />
+                          className='pl-2 outline-none border-none bg-transparent'
+                        />
                       </span>
                     </div>
                   </label>
@@ -795,7 +640,9 @@ export default function FormApplication() {
               </section>
 
               <section>
-                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">Would you like to receive early product updates and behind-the-scenes content?</p>
+                <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">
+                  Would you like to receive early product updates and behind-the-scenes content?
+                </p>
 
                 <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
                   <label className="flex items-start gap-x-3">
@@ -804,8 +651,14 @@ export default function FormApplication() {
                         type="radio"
                         name="invite_option"
                         value="Yes"
-                        checked={formData.invite_option === "Yes"}
-                        onChange={handleChange}
+                        checked={
+                          membership === "individual"
+                            ? individual.invite_option === "Yes"
+                            : business.invite_option === "Yes"
+                        }
+                        onChange={(e) =>
+                          handleChange(e, membership === "individual" ? "individual" : "business")
+                        }
                         className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
@@ -820,8 +673,14 @@ export default function FormApplication() {
                         type="radio"
                         name="invite_option"
                         value="No"
-                        checked={formData.invite_option === "No"}
-                        onChange={handleChange}
+                        checked={
+                          membership === "individual"
+                            ? individual.invite_option === "No"
+                            : business.invite_option === "No"
+                        }
+                        onChange={(e) =>
+                          handleChange(e, membership === "individual" ? "individual" : "business")
+                        }
                         className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
                       />
                       <span className='text-[#808080] text-base md:text-lg'>
@@ -831,6 +690,7 @@ export default function FormApplication() {
                   </label>
                 </div>
               </section>
+
 
 
 
