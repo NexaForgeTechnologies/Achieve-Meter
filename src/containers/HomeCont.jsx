@@ -1,6 +1,9 @@
+"use client";
 import BtnOne from "@/components/BtnOne";
+import useFormStore from "@/useFormStore";
 
 export default function HomeCont() {
+    const { isOpen, setIsOpen } = useFormStore();
     return (
         <>
             <section className="grid grid-cols-1 lg:grid-cols-2 bg-[#FCF7EE] w-screen ml-[calc(50%-50vw)] px-5 sm:px-10 md:px-18 lg:px-20 py-10">
@@ -31,7 +34,7 @@ export default function HomeCont() {
                     </div>
 
                     <div className="mt-3 md:mt-5">
-                        <BtnOne name={"Join the Waitlist"} />
+                        <BtnOne name={"Join the Waitlist"} onClick={() => {setIsOpen(true);}}/>
                     </div>
                 </div>
 

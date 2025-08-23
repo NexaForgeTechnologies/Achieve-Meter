@@ -1,6 +1,9 @@
+"use client";
 import BtnOne from "@/components/BtnOne";
+import useFormStore from "@/useFormStore";
 
 export default function VelocityCont() {
+    const {isOpen, setIsOpen} = useFormStore();
     return (
         <>
             <section className="bg-white pb-20">
@@ -28,9 +31,11 @@ export default function VelocityCont() {
                         </p>
 
                         <div className="flex gap-x-1.5 md:gap-x-3 gap-y-2">
-                            <BtnOne name={"Join the Waitlist – Individual"} />
+                            <BtnOne name={"Join the Waitlist – Individual"}
+                            onClick={()=> setIsOpen(!isOpen)} />
 
                             <BtnOne name={"Join the Waitlist– Enterprise"}
+                            onClick={()=> setIsOpen(!isOpen)}
                                 bgColor="bg-transparent"
                                 textColor="text-[#CD8A33]"
                             />

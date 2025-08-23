@@ -1,6 +1,9 @@
+"use client"
 import BtnOne from "@/components/BtnOne";
+import useFormStore from "@/useFormStore";
 
 export default function WhyMyAchieveCont() {
+    const { isOpen, setIsOpen } = useFormStore();
     return (
         <>
             <section className="grid grdi-cols-1 md:grid-cols-2 py-15 gap-5 md:gap-7">
@@ -59,6 +62,7 @@ export default function WhyMyAchieveCont() {
                     <BtnOne
                         className={"max-w-80"}
                         name={"Sign Up – Individual Access"}
+                        onClick={() => setIsOpen(!isOpen)}
                     />
                 </div>
 
