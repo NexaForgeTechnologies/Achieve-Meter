@@ -71,26 +71,33 @@ export default function FormApplication() {
   };
 
   // ---------------- SUBMIT ----------------
-  const handleSubmit = async (e, type = "individual") => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(individual);
-    console.log(business);
+
     try {
-      if (type === "individual") {
-        console.log("Submitting Individual:", individual);
-        const res = await axios.post("/api/waitlist", individual);
-        alert(res.data.message);
+      let payload;
+
+      if (membership === "individual") {
+        payload = { membership_type: "individual", ...individual };
+        console.log("Submitting Individual:", payload);
+
+      } else if (membership === "business") {
+        payload = { membership_type: "business", ...business };
+        console.log("Submitting Business:", payload);
+
       } else {
-        console.log("Submitting Business:", business);
-        const res = await axios.post("/api/waitlist", business);
-        alert(res.data.message);
+        alert("Please select a membership type");
+        return;
       }
+
+      const res = await axios.post("/api/waitlist", payload);
+      alert(res.data.message);
+
     } catch (err) {
       console.error(err);
       alert("Error submitting form");
     }
   };
-
 
 
   const { isOpen, setIsOpen } = useFormStore();
