@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "@/containers/Footer";
 import Header from "@/containers/Header";
 import FormApplication from "@/containers/FormApplication";
+import { Toaster } from "react-hot-toast";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -44,6 +45,11 @@ export default function RootLayout({ children }) {
           <FormApplication />
         </main>
         <Footer />
+        
+        <Toaster position="top-right" reverseOrder={false} toastOptions={{
+          className: "!bg-slate-800 !text-white !rounded-2xl !p-4 !shadow-lg", duration: 4000
+        }} />
+
       </body>
     </html>
   );

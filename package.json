@@ -17,6 +17,8 @@
     "nodemailer": "^7.0.5",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-hot-toast": "^2.6.0",
+    "toaster": "^0.1.2",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

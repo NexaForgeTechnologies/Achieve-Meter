@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import BtnOne from '../components/BtnOne';
 import useFormStore from '@/useFormStore';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export default function FormApplication() {
 
@@ -76,15 +77,11 @@ export default function FormApplication() {
 
 
   const [loading, setLoading] = useState(false);
+
   // ---------------- SUBMIT ----------------
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    // keep loading for 9 seconds, then reset
-    setTimeout(() => {
-      setLoading(false);
-    }, 9500);
 
     try {
       let payload;
@@ -103,11 +100,16 @@ export default function FormApplication() {
       }
 
       const res = await axios.post("/api/waitlist", payload);
-      alert(res.data.message);
+
+      setIsOpen(false);
+      toast.success(res.data.message);   // ✅ replaced alert()
 
     } catch (err) {
+      setIsOpen(false);
       console.error(err);
-      alert("Error submitting form");
+      toast.error("Error submitting form");  // ✅ replaced alert()
+    } finally {
+      setLoading(false);
     }
   };
 
