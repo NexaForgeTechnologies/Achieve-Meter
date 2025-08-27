@@ -136,9 +136,9 @@ export async function POST(request) {
           <p>You're officially on the AchieveMeter waitlist – welcome to the future of career acceleration.</p>
           <p>Here’s what you can expect:</p>
           <ul>
-            <li>✅ Early access to MyAchieve</li>
-            <li>✅ Priority invites to our AI-led bootcamps</li>
-            <li>✅ A front-row seat as we build a new standard for career growth</li>
+            <p>✅ Early access to MyAchieve</p>
+            <p>✅ Priority invites to our AI-led bootcamps</p>
+            <p>✅ A front-row seat as we build a new standard for career growth</p>
           </ul>
           <p>Follow us on LinkedIn for sneak peeks and updates.</p>
           <p>Thanks for joining the movement,<br><b>The AchieveMeter Team</b></p>
@@ -157,9 +157,9 @@ export async function POST(request) {
           <p>You’re on our priority list for pilot access and partnership opportunities.</p>
           <p>Next steps:</p>
           <ul>
-            <li>✔️ We'll review your submission</li>
-            <li>✔️ You’ll receive the Enterprise Pack PDF shortly</li>
-            <li>✔️ Our team may reach out for a discovery call</li>
+            <p>✅ We'll review your submission</p>
+            <p>✅ You’ll receive the Enterprise Pack PDF shortly</p>
+            <p>✅ Our team may reach out for a discovery call</p>
           </ul>
           <p>We’re excited to explore how we can support your organisation.</p>
           <p><b>Team AchieveMeter</b></p>

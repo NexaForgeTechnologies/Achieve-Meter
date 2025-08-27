@@ -1,9 +1,7 @@
 "use client";
 import BtnOne from "@/components/BtnOne";
-import useFormStore from "@/useFormStore";
-
+import Link from "next/link";
 export default function PreSeedCont() {
-    const {isOpen, setIsOpen} = useFormStore();
     return (
         <>
             <section className="bg-[#E5B3521A] rounded-2xl py-8 my-10 grid grid-cols-1 md:grid-cols-2">
@@ -43,14 +41,15 @@ export default function PreSeedCont() {
                     </ul>
 
                     <div className="flex gap-x-1.5 md:gap-x-2 md:flex-col lg:flex-row gap-y-2">
-                        <BtnOne name={"Request Investor Pack"}
-                        onClick={()=> setIsOpen(!isOpen)} />
+                        <Link href="mailto:Grow@achiever-grp.com">
+                            <BtnOne name={"Request Investor Pack"} />
+                        </Link>
 
-                        <BtnOne name={"Book a Founder Call"}
-                        onClick={()=> setIsOpen(!isOpen)}
-                            bgColor="bg-transparent"
-                            textColor="text-[#CD8A33]"
-                        />
+                        <Link href="mailto:Grow@achiever-grp.com">
+                            <BtnOne name={"Book a Founder Call"}
+                                bgColor="bg-transparent"
+                                textColor="text-[#CD8A33]"
+                            /></Link>
                     </div>
                 </div>
 
