@@ -130,7 +130,7 @@ export async function POST(request) {
       userEmailOptions = {
         from: `"AchieveMeter Team" <${adminEmail}>`,
         to: email,
-        subject: "Welcome to AchieveMeter – You're On the List!",
+        subject: "🎉 You're on the Founding Waitlist! Thanks for signing up. You’ve officially joined the AchieveMeter movement — where career velocity meets clarity, purpose, and measurable progress. We’ll keep you updated on: Early access opportunities Behind-the-scenes updates Your invitation to experience the platform before anyone else Next Steps Keep an eye on your inbox — and follow us on LinkedIn to stay connected. Welcome to the future o growth. – The AchieveMeter Team",
         html: `
           <p>Hi ${name},</p>
           <p>You're officially on the AchieveMeter waitlist – welcome to the future of career acceleration.</p>
