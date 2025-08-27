@@ -5,6 +5,7 @@ import useFormStore from '@/useFormStore';
 import axios from 'axios';
 
 export default function FormApplication() {
+
   // ---------------- STATES ----------------
   const [individual, setIndividual] = useState({
     membership_type: "individual",
@@ -50,6 +51,9 @@ export default function FormApplication() {
     }
   };
 
+
+
+
   // For checkboxes (multi-select arrays)
   const handleCheckboxChange = (e, key, type = "individual") => {
     const { value, checked } = e.target;
@@ -70,9 +74,17 @@ export default function FormApplication() {
     }
   };
 
+
+  const [loading, setLoading] = useState(false);
   // ---------------- SUBMIT ----------------
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    // keep loading for 9 seconds, then reset
+    setTimeout(() => {
+      setLoading(false);
+    }, 9500);
 
     try {
       let payload;
@@ -702,7 +714,10 @@ export default function FormApplication() {
 
 
               <div className='flex justify-center items-center' >
-                <BtnOne typeSubmit={"submit"} name={"Submit Application to Waitlist"} />
+                <BtnOne
+                  typeSubmit={"submit"}
+                  name={"Submit Application to Waitlist"}
+                  loading={loading} />
               </div>
             </section>
           </form >
