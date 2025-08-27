@@ -43,7 +43,7 @@ export default function Footer() {
 
                         {/* Privacy Policy */}
                         <Link
-                            href="https://achievemeter.com/privacypolicy"
+                            href="https://achiever-grp.com/privacypolicy"
                             target="_blank"
                         >
                             <li className="flex items-center gap-x-2 hover:opacity-80 transition-opacity text-black relative -left-1">
