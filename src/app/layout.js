@@ -36,11 +36,11 @@ export const metadata = {
   openGraph: {
     title: "Achieve Meter",
     description: "VISION | VALUE | VELOCITY — Enterprise Growth Solutions",
-    url: "https://achievemeter.com", // main
+    url: "https://achievemeter.com", // canonical domain
     siteName: "Achieve Meter",
     images: [
       {
-        url: "https://achievemeter.com/logo.png", // absolute URL for crawlers
+        url: "https://achievemeter.com/logo.png", // absolute URL
         width: 1200,
         height: 630,
         alt: "Achieve Meter",
@@ -54,9 +54,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Achieve Meter",
     description: "VISION | VALUE | VELOCITY — Enterprise Growth Solutions",
-    images: [
-      "https://achievemeter.com/logo.png",  // must be absolute
-    ],
+    images: ["https://achievemeter.com/logo.png"], // absolute URL
   },
 
   alternates: {
@@ -64,10 +62,10 @@ export const metadata = {
     domains: [
       "https://achievemeter.com",
       "https://www.achievemeter.com",
-      "www.achievemeter.com",
     ],
   },
 };
+
 
 
 
