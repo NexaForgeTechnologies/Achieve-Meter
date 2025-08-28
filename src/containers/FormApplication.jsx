@@ -164,6 +164,7 @@ export default function FormApplication() {
                         type="radio"
                         name="membership_type"
                         value="individual"
+                        required
                         checked={membership === "individual"}
                         onChange={(e) => {
                           setMembership(e.target.value);
@@ -263,7 +264,7 @@ export default function FormApplication() {
                   </section>
 
                   <section className='flex flex-col gap-y-2'>
-                    <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">What are you hoping to achieve with AchieveMeter?(Tick all that apply)</p>
+                    <p className="font-normal text-[#1B1B1B] text-base md:text-2xl">What are you hoping to achieve with AchieveMeter?(Select atleast one)</p>
 
                     <div className="space-y-2 mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-2">
                       <label className="flex items-start gap-x-3">
@@ -398,6 +399,7 @@ export default function FormApplication() {
                             type="radio"
                             name="early_access"
                             value="Yes"
+                            required
                             checked={individual.early_access === "Yes"}
                             onChange={(e) => handleChange(e, "individual")}
                             className="appearance-none w-4 h-4 rounded border border-gray-400 checked:bg-[black] checked:border-[black] mr-2 cursor-pointer "
@@ -672,6 +674,7 @@ export default function FormApplication() {
                         type="radio"
                         name="invite_option"
                         value="Yes"
+                        required
                         checked={
                           membership === "individual"
                             ? individual.invite_option === "Yes"

@@ -47,7 +47,7 @@ export default function RootLayout({ children }) {
         <Footer />
         
         <Toaster position="top-right" reverseOrder={false} toastOptions={{
-          className: "!bg-slate-800 !text-white !rounded-2xl !p-4 !shadow-lg", duration: 4000
+          className: "!bg-slate-800 !text-white !rounded-2xl !p-4 !shadow-lg", duration: 10000
         }} />
 
       </body>

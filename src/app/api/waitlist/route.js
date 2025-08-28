@@ -130,7 +130,7 @@ export async function POST(request) {
       userEmailOptions = {
         from: `"AchieveMeter Team" <${adminEmail}>`,
         to: email,
-        subject: "🎉 You're on the Founding Waitlist! Thanks for signing up. You’ve officially joined the AchieveMeter movement — where career velocity meets clarity, purpose, and measurable progress. We’ll keep you updated on: Early access opportunities Behind-the-scenes updates Your invitation to experience the platform before anyone else Next Steps Keep an eye on your inbox — and follow us on LinkedIn to stay connected. Welcome to the future o growth. – The AchieveMeter Team",
+        subject: "Welcome to AchieveMeter – You're On the List!",
         html: `
           <p>Hi ${name},</p>
           <p>You're officially on the AchieveMeter waitlist – welcome to the future of career acceleration.</p>
@@ -145,7 +145,7 @@ export async function POST(request) {
         `,
         text: `Hi ${name},\nYou're officially on the AchieveMeter waitlist – welcome to the future of career acceleration.\n\nHere’s what you can expect:\n- Early access to MyAchieve\n- Priority invites to our AI-led bootcamps\n- A front-row seat as we build a new standard for career growth\n\nFollow us on LinkedIn for sneak peeks and updates.\n\nThanks for joining the movement,\nThe AchieveMeter Team`,
       };
-      
+
     } else if (membership_type === "business") {
       userEmailOptions = {
         from: `"AchieveMeter Team" <${adminEmail}>`,
@@ -180,7 +180,21 @@ export async function POST(request) {
     return Response.json(
       {
         success: true,
-        message: "🎉 You're in! Confirmation email sent.",
+        message: `🎉 You're on the Founding Waitlist!
+
+Thanks for signing up. You’ve officially joined the AchieveMeter movement — where career velocity meets clarity, purpose, and measurable progress.
+
+We’ll keep you updated on:
+- Early access opportunities
+- Behind-the-scenes updates
+- Your invitation to experience the platform before anyone else
+
+Next Steps:
+Keep an eye on your inbox — and follow us on LinkedIn to stay connected.
+
+Welcome to the future of growth.
+
+– The AchieveMeter Team`,
         applicationId: result.insertId,
       },
       { status: 200 }
