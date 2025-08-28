@@ -1,6 +1,7 @@
 "use client";
 import BtnOne from "@/components/BtnOne";
 import useFormStore from "@/useFormStore";
+import Link from "next/link";
 
 export default function WhoItsForCont({ hide }) {
     const { isOpen, setIsOpen } = useFormStore();
@@ -51,14 +52,15 @@ export default function WhoItsForCont({ hide }) {
                     </h1>
 
                     <div className="flex gap-x-1.5 md:gap-x-2 md:flex-col lg:flex-row gap-y-2">
-                        <BtnOne name={"Join the Pilot Waitlist"} 
-                        onClick={()=> setIsOpen(true)}/>
+                        <BtnOne name={"Join the Pilot Waitlist"}
+                            onClick={() => setIsOpen(true)} />
 
-                        <BtnOne name={"Download Enterprise Overview"}
-                            bgColor="bg-white"
-                            textColor="text-[#CD8A33]"
-                            onClick={()=> setIsOpen(true)}
-                        />
+                        <a href={"/AchieveMeter-Brochure.pdf"} download>
+                            <BtnOne name={"Download Enterprise Overview"}
+                                bgColor="bg-white"
+                                textColor="text-[#CD8A33]"
+                            />
+                        </a>
                     </div>
                 </div>
 
