@@ -40,7 +40,7 @@ export const metadata = {
     siteName: "Achieve Meter",
     images: [
       {
-        url: "/logo.png",
+        url: "https://achievemeter.com/logo.png", // absolute URL for crawlers
         width: 1200,
         height: 630,
         alt: "Achieve Meter",
@@ -54,7 +54,9 @@ export const metadata = {
     card: "summary_large_image",
     title: "Achieve Meter",
     description: "VISION | VALUE | VELOCITY — Enterprise Growth Solutions",
-    images: ["/logo.png"],
+    images: [
+      "https://achievemeter.com/logo.png",  // must be absolute
+    ],
   },
 
   alternates: {
@@ -65,6 +67,7 @@ export const metadata = {
     ],
   },
 };
+
 
 
 
