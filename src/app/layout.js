@@ -64,6 +64,7 @@ export const metadata = {
     domains: [
       "https://achievemeter.com",
       "https://www.achievemeter.com",
+      "www.achievemeter.com",
     ],
   },
 };
