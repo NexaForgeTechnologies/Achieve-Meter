@@ -31,15 +31,14 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Achieve Meter | Enterprise Growth Solutions",
-  description: "VISION | VALUE | VELOCITY",
+  description: "VISION | VALUE | VELOCITY — Enterprise Growth Solutions",
   openGraph: {
     title: "Achieve Meter",
-    description: "VISION | VALUE | VELOCITY",
-    url: "https://achievemeter.com",
+    description: "VISION | VALUE | VELOCITY — Enterprise Growth Solutions",
     siteName: "Achieve Meter",
     images: [
       {
-        url: "https://achievemeter.com/logo.png",
+        url: "/logo.png", // ✅ Just keep the image
         width: 1200,
         height: 630,
         alt: "Achieve Meter",
@@ -51,15 +50,17 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Achieve Meter",
-    description: "VISION | VALUE | VELOCITY",
-    images: ["https://achievemeter.com/logo.png"],
+    description: "VISION | VALUE | VELOCITY — Enterprise Growth Solutions",
+    images: ["/logo.png"], // ✅ Twitter only cares about the image
   },
 };
+
 
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head></head>
       <body
         className={`${montserrat.variable} ${inter.variable} ${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
@@ -69,7 +70,7 @@ export default function RootLayout({ children }) {
           <FormApplication />
         </main>
         <Footer />
-        
+
         <Toaster position="top-right" reverseOrder={false} toastOptions={{
           className: "!bg-slate-800 !text-white !rounded-2xl !p-4 !shadow-lg", duration: 10000
         }} />

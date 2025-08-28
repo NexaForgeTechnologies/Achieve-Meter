@@ -19,7 +19,7 @@ export default function HomeCont() {
 
                     <div className="flex flex-col justify-center items-start gap-y-1">
                         <p className="font-inter text-[black] font-normal text-start text-sm sm:text-md md:text-lg max-w-130">
-                            Measure. Track. Achieve Success.
+                            VISION. VALUE. VELOCITY.
                         </p>
 
                         <p className="font-inter text-[#808080] font-normal text-start text-sm sm:text-md md:text-lg max-w-130">
