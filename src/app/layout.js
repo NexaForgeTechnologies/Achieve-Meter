@@ -30,12 +30,12 @@ const geistMono = Geist_Mono({
 
 
 export const metadata = {
-  title: "Achieve Meter | Enterprise Growth Solutions",
-  description: "VISION | VALUE | VELOCITY — Enterprise Growth Solutions",
+  title: "Achieve Meter | VISION | VALUE | VELOCITY",
+  description: "VISION | VALUE | VELOCITY",
 
   openGraph: {
     title: "Achieve Meter",
-    description: "VISION | VALUE | VELOCITY — Enterprise Growth Solutions",
+    description: "VISION | VALUE | VELOCITY",
     url: "https://achievemeter.com", // canonical domain
     siteName: "Achieve Meter",
     images: [
@@ -53,7 +53,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Achieve Meter",
-    description: "VISION | VALUE | VELOCITY — Enterprise Growth Solutions",
+    description: "VISION | VALUE | VELOCITY",
     images: ["https://achievemeter.com/logo.png"], // absolute URL
   },
 
@@ -73,7 +73,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head></head>
+      <head>
+      <link rel="icon" href="/logo.png" type="image/x-icon"/>
+      </head>
       <body
         className={`${montserrat.variable} ${inter.variable} ${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
