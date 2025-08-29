@@ -2,6 +2,7 @@
 import db from "@/config/db";
 import nodemailer from "nodemailer";
 import 'dotenv/config';
+import cron from "node-cron";
 
 export async function POST(request) {
   try {
@@ -146,6 +147,7 @@ export async function POST(request) {
         text: `Hi ${name},\nYou're officially on the AchieveMeter waitlist – welcome to the future of career acceleration.\n\nHere’s what you can expect:\n- Early access to MyAchieve\n- Priority invites to our AI-led bootcamps\n- A front-row seat as we build a new standard for career growth\n\nFollow us on LinkedIn for sneak peeks and updates.\n\nThanks for joining the movement,\nThe AchieveMeter Team`,
       };
 
+
     } else if (membership_type === "business") {
       userEmailOptions = {
         from: `"AchieveMeter Team" <${adminEmail}>`,
@@ -169,12 +171,109 @@ export async function POST(request) {
     }
 
     try {
-      console.log("📨 Sending user email to:", userEmailOptions.to);
+      console.log("📨 Preparing to send Business first email...");
+      console.log("To:", email);
+      console.log("From:", adminEmail);
+      console.log("Membership Type:", membership_type);
+      console.log("Email HTML length:", userEmailOptions.html?.length);
+
       await transporter.sendMail(userEmailOptions);
-      console.log("✅ User email sent.");
+      console.log("✅ Business First email sent.");
     } catch (err) {
-      console.error("❌ User email failed:", err.message, err.stack);
+      console.error("❌ First email failed:", err.message, err.stack);
     }
+
+
+    // ... inside your POST handler after sending the first "Welcome" email:
+
+    if (membership_type === "individual") {
+      // Email 2 details
+      const email2Options = {
+        from: `"AchieveMeter Team" <${adminEmail}>`,
+        to: email,
+        subject: "What is MyAchieve – and why it's made for you",
+        html: `
+      <p>Hi ${name},</p>
+      <p>While we’re getting ready to launch, we wanted to give you a deeper look at <b>MyAchieve</b> – your personal career operating system.</p>
+      <p>With MyAchieve, you’ll be able to:</p>
+      <ul>
+        <li>✅ Track milestones and goals</li>
+        <li>✅ Align your growth with your values</li>
+        <li>✅ Get peer endorsements on your progress</li>
+        <li>✅ Receive AI-powered guidance for your next career step</li>
+      </ul>
+      <p>Stay tuned – you’ll be one of the first to experience it.</p>
+      <p>Cheers,<br>Team AchieveMeter</p>
+    `,
+        text: `Hi ${name},\n\nWhile we’re getting ready to launch, we wanted to give you a deeper look at MyAchieve – your personal career operating system.\n\nWith MyAchieve, you’ll be able to:\n✅ Track milestones and goals\n✅ Align your growth with your values\n✅ Get peer endorsements on your progress\n✅ Receive AI-powered guidance for your next career step\n\nStay tuned – you’ll be one of the first to experience it.\n\nCheers,\nTeam AchieveMeter`,
+      };
+
+      // --- Schedule for 3 days later ---
+      const delayMs = 3 * 24 * 60 * 60 * 1000;
+      const fireAt = Date.now() + delayMs;
+
+      //checks updates every 5 minutes
+      const reminderJob = cron.schedule("*/5 * * * *", async () => {
+        // runs every day at 9am server time
+        if (Date.now() >= fireAt) {
+          try {
+            await transporter.sendMail(email2Options);
+            console.log(`✅ Email 2 (Meet MyAchieve) sent to ${email}`);
+            reminderJob.stop();
+          } catch (error) {
+            console.error("❌ Failed to send Email 2:", error);
+          }
+        }
+      });
+
+      console.log("⏳ Email 2 scheduled for", new Date(fireAt).toISOString());
+    }
+
+    if (membership_type === "business") {
+      // Path to your PDF
+      const path = require("path"); // at the top of your file if not already
+
+      const pdfPath = path.join(process.cwd(), "public", "AchieveMeter-Brochure.pdf");
+
+
+      const email2Options = {
+        from: `AchieveMeter Partnerships Team <${adminEmail}>`,
+        to: business_email,
+        subject: "Here’s Your Enterprise Overview Pack",
+        html: `
+      <p>Hi ${contact_name},</p>
+      <p>As promised, here’s your AchieveMeter Enterprise Overview Pack – a complete breakdown of how our platform accelerates workforce development across performance, wellbeing, and purpose.</p>
+      <p>If you'd like to schedule a strategy call, contact us via this very email.</p>
+      <p>Thanks again,<br><b>The AchieveMeter Partnerships Team</b></p>
+    `,
+        text: `
+      Hi ${contact_name},
+
+      As promised, here’s your AchieveMeter Enterprise Overview Pack – a complete breakdown of how our platform accelerates workforce development across performance, wellbeing, and purpose.
+
+      If you'd like to schedule a strategy call, contact us via this very email.
+
+      Thanks again,
+      The AchieveMeter Partnerships Team
+    `,
+        attachments: [
+          {
+            filename: "AchieveMeter-Brochure.pdf",
+            path: pdfPath, // local path or URL
+          },
+        ],
+      };
+
+      try {
+        const info = await transporter.sendMail(email2Options);
+        console.log(`✅ Email 2 (Enterprise Pack) sent immediately to ${business_email}`);
+        console.log("📧 Email 2 send info:", info);
+      } catch (err) {
+        console.error("❌ Failed to send Email 2 (Enterprise Pack):", err.message, err.stack);
+      }
+
+    }
+
 
     // ---- Final Response ----
     return Response.json(
@@ -182,19 +281,19 @@ export async function POST(request) {
         success: true,
         message: `🎉 You're on the Founding Waitlist!
 
-Thanks for signing up. You’ve officially joined the AchieveMeter movement — where career velocity meets clarity, purpose, and measurable progress.
+        Thanks for signing up. You’ve officially joined the AchieveMeter movement — where career velocity meets clarity, purpose, and measurable progress.
 
-We’ll keep you updated on:
-- Early access opportunities
-- Behind-the-scenes updates
-- Your invitation to experience the platform before anyone else
+        We’ll keep you updated on:
+        - Early access opportunities
+        - Behind-the-scenes updates
+        - Your invitation to experience the platform before anyone else
 
-Next Steps:
-Keep an eye on your inbox — and follow us on LinkedIn to stay connected.
+        Next Steps:
+        Keep an eye on your inbox — and follow us on LinkedIn to stay connected.
 
-Welcome to the future of growth.
+        Welcome to the future of growth.
 
-– The AchieveMeter Team`,
+        – The AchieveMeter Team`,
         applicationId: result.insertId,
       },
       { status: 200 }
