@@ -55,7 +55,7 @@ export async function POST(request) {
 
     // ---- Insert into database ----
     const [result] = await db.execute(
-      `INSERT INTO waitlist (
+      `INSERT INTO achieve_meter (
         membership_type, name, email, linkedin, hopes, early_access,
         contact_name, company_name, company_size, business_email,
         company_industry, interests, source, source_other, invite_option
