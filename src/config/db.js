@@ -2,10 +2,10 @@
 import mysql from "mysql2/promise";
 
 const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "AchieveMeter",
+  host: "77.37.35.20",
+  user: "u901234396_procurement",
+  password: "1A2b3u4bakar>?<",
+  database: "u901234396_procurement",
 });
 
 // ✅ export db as default so you can import db from "..."
